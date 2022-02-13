@@ -23,10 +23,12 @@ public class TrainingDay {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String dayOfWeak;
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeak;
 
     @Column(nullable = false)
-    private String muscleGroup;
+    @Enumerated(EnumType.STRING)
+    private MuscleGroup muscleGroup;
 
     @Column(nullable = false)
     private String description;
@@ -43,8 +45,7 @@ public class TrainingDay {
     @Column(nullable = false)
     private int weightUsually;
 
-    @Temporal(TemporalType.DATE)
-    private Date localDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    private LocalDate date = LocalDate.now();
 
     private int count_today;
 
@@ -62,8 +63,8 @@ public class TrainingDay {
     private User user;
 
     public TrainingDay(DayOfWeek dayOfWeak, MuscleGroup muscleGroup, String description, int sequenceNumber, int approaches, int repeats, int weightUsually) {
-        this.dayOfWeak = dayOfWeak.getDisplayName(TextStyle.FULL, Locale.getDefault());
-        this.muscleGroup = muscleGroup.name();
+        this.dayOfWeak = dayOfWeak;
+        this.muscleGroup = muscleGroup;
         this.description = description;
         this.sequenceNumber = sequenceNumber;
         this.approaches = approaches;
@@ -71,19 +72,4 @@ public class TrainingDay {
         this.weightUsually = weightUsually;
     }
 
-    public DayOfWeek getDayOfWeak() {
-        return DayOfWeek.valueOf(dayOfWeak);
-    }
-
-    public void setDayOfWeak(DayOfWeek dayOfWeak) {
-        this.dayOfWeak = dayOfWeak.getDisplayName(TextStyle.FULL, Locale.getDefault());
-    }
-
-    public MuscleGroup getMuscleGroup() {
-        return MuscleGroup.valueOf(muscleGroup);
-    }
-
-    public void setMuscleGroup(MuscleGroup muscleGroup) {
-        this.muscleGroup = muscleGroup.name();
-    }
 }

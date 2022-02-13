@@ -19,8 +19,7 @@ public class Weight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private Date localDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    private LocalDate date = LocalDate.now();
 
     @Column(nullable = false)
     private int weight;

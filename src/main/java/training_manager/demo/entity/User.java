@@ -3,6 +3,8 @@ package training_manager.demo.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
+import training_manager.demo.enums.Role;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -21,6 +23,8 @@ public class User {
 
     @Column(nullable = false, updatable = false)
     private String password;
+
+    private Role role;
 
     private int height;
 

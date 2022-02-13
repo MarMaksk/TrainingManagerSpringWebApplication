@@ -18,8 +18,7 @@ public class BodyMeasurement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private Date localDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    private LocalDate date = LocalDate.now();
 
     private int chest;
     private int waist;
