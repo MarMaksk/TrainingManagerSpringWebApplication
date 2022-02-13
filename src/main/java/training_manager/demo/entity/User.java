@@ -1,5 +1,6 @@
 package training_manager.demo.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,13 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, updatable = false)
-    private String nickname;
-
-    @Column(nullable = false, updatable = false)
-    private String password;
-
-    private Role role;
+    private UserInfo userInfo;
 
     private int height;
 
@@ -45,4 +40,8 @@ public class User {
     private Set<BodyMeasurement> bodyMeasurement;
 
     private Long telegramId;
+
+    public User(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 }
