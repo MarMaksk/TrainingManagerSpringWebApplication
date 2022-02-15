@@ -1,13 +1,11 @@
 package training_manager.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import training_manager.demo.enums.Role;
+import lombok.*;
+import training_manager.demo.enums.RoleEnum;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +19,4 @@ public class UserInfo {
 
     @Column(nullable = false, updatable = false)
     private String password;
-
-    @Column(nullable = false)
-    private Role role;
 }

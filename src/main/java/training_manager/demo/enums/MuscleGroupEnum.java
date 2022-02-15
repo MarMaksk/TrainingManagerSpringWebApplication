@@ -1,6 +1,6 @@
 package training_manager.demo.enums;
 
-public enum MuscleGroup {
+public enum MuscleGroupEnum {
     BICEPS("Бицепс>"),
     TRICEPS("Трицепс"),
     DELTOID("Дельта"),
@@ -12,7 +12,7 @@ public enum MuscleGroup {
 
     private String name;
 
-    MuscleGroup(String name) {
+    MuscleGroupEnum(String name) {
         this.name = name;
     }
 }

@@ -10,7 +10,8 @@ import java.util.Set;
 @Data
 @Table(name = "users")
 @NoArgsConstructor
-//@Builder
+@AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,28 +25,42 @@ public class User {
 
     private int starting_weight;
 
+    @Builder.Default
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Column(nullable = false)
+    @ManyToMany
+    @JoinTable(name = "users_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    //@Builder.Default
+    @Builder.Default
     private Set<Weight> weights = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    //@Builder.Default
+    @Builder.Default
     private Set<TrainingDay> trainingDays = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    //@Builder.Default
+    @Builder.Default
     private Set<BodyMeasurement> bodyMeasurements = new HashSet<>();
 
     private Long telegramId;
 
     public User(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    protected void addRole(Role role) {
+        roles.add(role);
     }
 
     public void addWeight(Weight weight) {

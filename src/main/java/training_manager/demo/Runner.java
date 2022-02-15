@@ -4,9 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import training_manager.demo.entity.Role;
 import training_manager.demo.entity.User;
 import training_manager.demo.entity.UserInfo;
-import training_manager.demo.enums.Role;
+import training_manager.demo.enums.RoleEnum;
 import training_manager.demo.repository.UserRepository;
 
 @Slf4j
@@ -19,7 +20,6 @@ public class Runner {
         User user = new User(UserInfo.builder()
                 .nickname("Maksim")
                 .password("12345")
-                .role(Role.ROLE_ADMIN)
                 .build());
         repository.save(user);
     }

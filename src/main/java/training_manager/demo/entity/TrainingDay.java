@@ -2,7 +2,7 @@ package training_manager.demo.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import training_manager.demo.enums.MuscleGroup;
+import training_manager.demo.enums.MuscleGroupEnum;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -23,7 +23,7 @@ public class TrainingDay {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private MuscleGroup muscleGroup;
+    private MuscleGroupEnum muscleGroup;
 
     @Column(nullable = false)
     private String description;
@@ -57,7 +57,7 @@ public class TrainingDay {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public TrainingDay(DayOfWeek dayOfWeak, MuscleGroup muscleGroup, String description, int sequenceNumber, int approaches, int repeats, int weightUsually) {
+    public TrainingDay(DayOfWeek dayOfWeak, MuscleGroupEnum muscleGroup, String description, int sequenceNumber, int approaches, int repeats, int weightUsually) {
         this.dayOfWeak = dayOfWeak;
         this.muscleGroup = muscleGroup;
         this.description = description;
