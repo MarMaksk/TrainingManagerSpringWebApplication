@@ -9,14 +9,9 @@ import java.time.DayOfWeek;
 
 public interface TrainingDayRepository extends JpaRepository<TrainingDay, Long> {
 
-//    TrainingDay findByUser(User user);
-//
-//    TrainingDay findByUserAndDayOfWeak(User user, DayOfWeek dayOfWeek);
-//
-//    TrainingDay findByUserAndDayOfWeakAndMuscleGroup(User user, DayOfWeek dayOfWeek, MuscleGroupEnum muscleGroup);
-//
-//    TrainingDay findByUserAndDayOfWeakAndMuscleGroupAndSequenceNumber(User user,
-//                                                                      DayOfWeek dayOfWeek,
-//                                                                      MuscleGroupEnum muscleGroup,
-//                                                                      int sequenceNumber);
+    TrainingDay findByUser(User user);
+
+    TrainingDay findByUserAndDay(User user, int day);
+
+    //TrainingDay findByUserAndDayAndMuscleGroup(User user, int day); // TODO: 15.02.2022
 }

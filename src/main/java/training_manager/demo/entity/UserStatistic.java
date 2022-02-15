@@ -1,8 +1,11 @@
 package training_manager.demo.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,5 +28,14 @@ public class UserStatistic {
             CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Column(nullable = false)
+    @ManyToMany
+    @JoinTable(name = "users_muscles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "muscle_id"))
+    private Set<Muscle> muscles;
 
 }

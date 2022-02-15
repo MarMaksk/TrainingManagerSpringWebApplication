@@ -20,7 +20,6 @@ public class TrainingDay {
     @Column(nullable = false)
     private int day;
 
-
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @Column(nullable = false)
@@ -31,25 +30,15 @@ public class TrainingDay {
     private Set<Muscle> muscles;
 
     @Column(nullable = false)
-    private String description;
+    private String descriptionExercises;
 
-    @Column(nullable = false)
-    private int sequenceNumber;
+    private int lastApproaches; //Сколько подходов было выполненов в последний раз
 
-    @Column(nullable = false)
-    private int approaches;
+    private int lastRepeats; //Сколько повторений было выполненов в последний раз
 
-    @Column(nullable = false)
-    private int repeats;
+    private int lastWeight; //Какой был последний вес
 
-    @Column(nullable = false)
-    private int weightUsually;
-
-    private LocalDate date = LocalDate.now();
-
-    private int count_today;
-
-    private int weightToday;
+    private LocalDate lastDate = LocalDate.now(); //Когда последний раз делалось
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
@@ -58,12 +47,5 @@ public class TrainingDay {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public TrainingDay(DayOfWeek dayOfWeak, MuscleGroupEnum muscleGroup, String description, int sequenceNumber, int approaches, int repeats, int weightUsually){
-        this.description = description;
-        this.sequenceNumber = sequenceNumber;
-        this.approaches = approaches;
-        this.repeats = repeats;
-        this.weightUsually = weightUsually;
-    }
 
 }

@@ -28,4 +28,10 @@ public class Muscle {
     @ManyToMany(mappedBy = "muscles")
     private Set<TrainingDay> trainingDay = new HashSet<>();
 
+    @Builder.Default
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "muscles")
+    private Set<UserStatistic> userStatistics = new HashSet<>();
+
 }
