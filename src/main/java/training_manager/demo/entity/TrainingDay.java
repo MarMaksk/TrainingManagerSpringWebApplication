@@ -1,12 +1,12 @@
 package training_manager.demo.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import training_manager.demo.enums.MuscleGroupEnum;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "training_days")
@@ -17,13 +17,18 @@ public class TrainingDay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeak;
-
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MuscleGroupEnum muscleGroup;
+    private int day;
+
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Column(nullable = false)
+    @ManyToMany
+    @JoinTable(name = "users_muscles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "muscle_id"))
+    private Set<Muscle> muscles;
 
     @Column(nullable = false)
     private String description;
@@ -46,10 +51,6 @@ public class TrainingDay {
 
     private int weightToday;
 
-    private int countForAllTime;
-
-    private int weightForAllTime;
-
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.MERGE,
@@ -57,9 +58,7 @@ public class TrainingDay {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public TrainingDay(DayOfWeek dayOfWeak, MuscleGroupEnum muscleGroup, String description, int sequenceNumber, int approaches, int repeats, int weightUsually) {
-        this.dayOfWeak = dayOfWeak;
-        this.muscleGroup = muscleGroup;
+    public TrainingDay(DayOfWeek dayOfWeak, MuscleGroupEnum muscleGroup, String description, int sequenceNumber, int approaches, int repeats, int weightUsually){
         this.description = description;
         this.sequenceNumber = sequenceNumber;
         this.approaches = approaches;

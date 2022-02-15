@@ -1,7 +1,7 @@
 package training_manager.demo.enums;
 
 public enum MuscleGroupEnum {
-    BICEPS("Бицепс>"),
+    BICEPS("Бицепс"),
     TRICEPS("Трицепс"),
     DELTOID("Дельта"),
     SHOULDERS("Плечи"),
