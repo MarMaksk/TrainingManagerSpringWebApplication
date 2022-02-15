@@ -1,19 +1,16 @@
 package training_manager.demo.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.annotations.Type;
-import training_manager.demo.enums.Role;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "users")
 @NoArgsConstructor
+//@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,21 +24,57 @@ public class User {
 
     private int starting_weight;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<Weight> weight;
+    @EqualsAndHashCode.Exclude
+    //@Builder.Default
+    private Set<Weight> weights = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<TrainingDay> trainingDay;
+    @EqualsAndHashCode.Exclude
+    //@Builder.Default
+    private Set<TrainingDay> trainingDays = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<BodyMeasurement> bodyMeasurement;
+    @EqualsAndHashCode.Exclude
+    //@Builder.Default
+    private Set<BodyMeasurement> bodyMeasurements = new HashSet<>();
 
     private Long telegramId;
 
     public User(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public void addWeight(Weight weight) {
+        this.weights.add(weight);
+        weight.setUser(this);
+    }
+
+    public void addTrainingDay(TrainingDay trainingDay) {
+        this.trainingDays.add(trainingDay);
+        trainingDay.setUser(this);
+    }
+
+    public void addBodyMeasurement(BodyMeasurement bodyMeasurement) {
+        this.bodyMeasurements.add(bodyMeasurement);
+        bodyMeasurement.setUser(this);
+    }
+
+    public void removeWeight(Weight weight) {
+        this.weights.remove(weight);
+        weight.setUser(null);
+    }
+
+    public void removeTrainingDay(TrainingDay trainingDay) {
+        this.trainingDays.remove(trainingDay);
+        trainingDay.setUser(null);
+    }
+
+    public void removeBodyMeasurement(BodyMeasurement bodyMeasurement) {
+        this.bodyMeasurements.remove(bodyMeasurement);
+        bodyMeasurement.setUser(null);
     }
 }

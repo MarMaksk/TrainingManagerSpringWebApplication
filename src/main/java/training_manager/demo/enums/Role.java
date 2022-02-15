@@ -1,9 +1,9 @@
 package training_manager.demo.enums;
 
 public enum Role {
-    USER("Пользователь"),
-    HELPER("Помощник"),
-    ADMIN("Администратор");
+    ROLE_USER("Пользователь"),
+    ROLE_HELPER("Помощник"),
+    ROLE_ADMIN("Администратор");
 
     private String name;
 

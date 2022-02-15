@@ -7,11 +7,6 @@ import training_manager.demo.enums.MuscleGroup;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.TextStyle;
-import java.util.Date;
-import java.util.Locale;
 
 @Entity
 @Table(name = "training_days")
