@@ -20,18 +20,35 @@ public class Muscle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private MuscleGroupEnum muscleGroup;
 
-    @Builder.Default
-    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "muscle", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    @ManyToMany(mappedBy = "muscles")
+    @EqualsAndHashCode.Exclude
     private Set<TrainingDay> trainingDay = new HashSet<>();
 
-    @Builder.Default
-    @EqualsAndHashCode.Exclude
+    //    @Builder.Default
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @ManyToMany(mappedBy = "muscles")
+//    private Set<UserStatistic> userStatistics = new HashSet<>();
+    @OneToMany(mappedBy = "muscle", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    @ManyToMany(mappedBy = "muscles")
+    @EqualsAndHashCode.Exclude
     private Set<UserStatistic> userStatistics = new HashSet<>();
 
+    public Muscle(MuscleGroupEnum muscleGroup) {
+        this.muscleGroup = muscleGroup;
+    }
+
+    public void addTrainingDay(TrainingDay trainingDay) {
+        this.trainingDay.add(trainingDay);
+        trainingDay.setMuscle(this);
+    }
+
+    public void addUserStatistics(UserStatistic userStatistics) {
+        this.userStatistics.add(userStatistics);
+        userStatistics.setMuscle(this);
+    }
 }

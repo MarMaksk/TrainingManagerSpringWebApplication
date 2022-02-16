@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,7 @@ public class UserStatistic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int day;
+    private LocalDate data = LocalDate.now();
 
     private int weight;
 
@@ -29,13 +30,20 @@ public class UserStatistic {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @Column(nullable = false)
-    @ManyToMany
-    @JoinTable(name = "users_muscles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "muscle_id"))
-    private Set<Muscle> muscles;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @Column(nullable = false)
+//    @ManyToMany
+//    @JoinTable(name = "users_muscles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "muscle_id"))
+//    private Set<Muscle> muscles;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
+    @JoinColumn(name = "muscle_id")
+    private Muscle muscle;
 
 }

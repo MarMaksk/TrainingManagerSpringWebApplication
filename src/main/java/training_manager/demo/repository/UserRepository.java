@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Override
     Optional<User> findById(Long aLong);
 
-    List<User> findAll();
+    List<User> findAllByOrderByIdAsc();
 
     User findByNickname(String nickname);
 

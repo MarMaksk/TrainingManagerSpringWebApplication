@@ -20,14 +20,12 @@ public class TrainingDay {
     @Column(nullable = false)
     private int day;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @Column(nullable = false)
-    @ManyToMany
-    @JoinTable(name = "users_muscles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "muscle_id"))
-    private Set<Muscle> muscles;
+    @ManyToOne(cascade = {CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
+    @JoinColumn(name = "muscle_id")
+    private Muscle muscle;
 
     @Column(nullable = false)
     private String descriptionExercises;
@@ -47,5 +45,7 @@ public class TrainingDay {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    public Muscle addMuscle(Muscle muscle) {
+        return this.muscle = muscle;
+    }
 }
