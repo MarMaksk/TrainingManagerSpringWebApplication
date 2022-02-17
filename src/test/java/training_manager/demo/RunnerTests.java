@@ -3,7 +3,6 @@ package training_manager.demo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.provider.HibernateUtils;
 import training_manager.demo.entity.User;
 import training_manager.demo.repository.UserRepository;
 
@@ -24,7 +23,7 @@ class RunnerTests {
 
     @Test
     void testUserRepository() {
-        User maksim = userRepository.findByNickname("Maksim");
+        User maksim = userRepository.findByNickname("Maksim").get();
         System.out.println(maksim);
     }
 

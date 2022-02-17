@@ -32,9 +32,8 @@ public class Role {
         user.addRole(this);
     }
 
-    // TODO: 15.02.2022
     public void removeRole(User user) {
-        users.add(user);
-        user.addRole(this);
+        users.remove(user);
+        user.removeRole(this);
     }
 }
