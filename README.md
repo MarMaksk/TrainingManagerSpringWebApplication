@@ -1,0 +1,2 @@
+# TrainingManagerSpringWebApplication
+Кроссплатформенный сервис тренировок
