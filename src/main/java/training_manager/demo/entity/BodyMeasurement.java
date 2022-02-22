@@ -10,11 +10,7 @@ import java.time.LocalDate;
 @Data
 @Table(name = "body_masurement")
 @NoArgsConstructor
-public class BodyMeasurement {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class BodyMeasurement extends AbstractEntity {
 
     private LocalDate date = LocalDate.now();
 
@@ -28,7 +24,8 @@ public class BodyMeasurement {
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

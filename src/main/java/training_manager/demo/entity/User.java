@@ -1,6 +1,7 @@
 package training_manager.demo.entity;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,10 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AbstractEntity {
 
     private int height;
 
@@ -49,6 +47,7 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
+    @BatchSize(size = 7)
     private Set<TrainingDay> trainingDays = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

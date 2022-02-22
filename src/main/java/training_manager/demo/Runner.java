@@ -39,8 +39,8 @@ public class Runner {
         User maksim = userRepository.findByNickname("Maksim").get();
         MuscleRepository muscleRepository = context.getBean(MuscleRepository.class);
         Muscle muscleGroup = muscleRepository.findByMuscleGroup(MuscleGroupEnum.BACK).get();
-        TrainingDay day = trainingDayRepository.findByUserAndDayAndMuscleGroup(maksim.getId(), 1, MuscleGroupEnum.BACK);
-        System.out.println(day);
+        //TrainingDay day = trainingDayRepository.findByUserAndDayAndMuscleGroup(maksim.getId(), 1, MuscleGroupEnum.BACK);
+        //System.out.println(day);
         BodyMeasurementService service = context.getBean(BodyMeasurementService.class);
         service.create(new BodyMeasurement());
         List<BodyMeasurement> all = service.findAllByUser(maksim);

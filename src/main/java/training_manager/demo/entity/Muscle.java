@@ -14,11 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Muscle {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Muscle extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private MuscleGroupEnum muscleGroup;
@@ -28,11 +24,6 @@ public class Muscle {
     @EqualsAndHashCode.Exclude
     private Set<TrainingDay> trainingDay = new HashSet<>();
 
-    //    @Builder.Default
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @ManyToMany(mappedBy = "muscles")
-//    private Set<UserStatistic> userStatistics = new HashSet<>();
     @OneToMany(mappedBy = "muscle", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

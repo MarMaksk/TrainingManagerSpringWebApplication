@@ -11,11 +11,7 @@ import java.time.LocalDate;
 @Table(name = "person_weigth")
 @Data
 @NoArgsConstructor
-public class Weight {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Weight extends AbstractEntity {
 
     private LocalDate date = LocalDate.now();
 
@@ -25,7 +21,8 @@ public class Weight {
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
