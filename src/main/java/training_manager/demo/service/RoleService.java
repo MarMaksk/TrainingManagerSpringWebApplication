@@ -33,4 +33,5 @@ public class RoleService implements CUDService<Role> {
     public void delete(Role entity) {
         repository.delete(entity);
     }
+
 }

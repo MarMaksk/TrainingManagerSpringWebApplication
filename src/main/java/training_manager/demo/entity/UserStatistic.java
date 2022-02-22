@@ -20,7 +20,7 @@ public class UserStatistic extends AbstractEntity {
             CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH},
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -28,7 +28,7 @@ public class UserStatistic extends AbstractEntity {
             CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH},
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "muscle_id")
     private Muscle muscle;
 

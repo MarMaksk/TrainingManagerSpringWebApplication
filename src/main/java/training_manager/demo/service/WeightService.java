@@ -26,6 +26,11 @@ public class WeightService implements CUDService<Weight> {
         ));
     }
 
+    public Weight findByUserLastWeight(Long id) {
+        return repository.findFirstByUserIdOrderByDateDesc(id)
+                .orElseThrow(NoSuchWeightException::new);
+    }
+
     @Override
     public Weight create(Weight entity) {
         return repository.save(entity);

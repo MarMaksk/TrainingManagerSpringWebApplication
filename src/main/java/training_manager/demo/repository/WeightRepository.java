@@ -16,4 +16,6 @@ public interface WeightRepository extends JpaRepository<Weight, Long> {
 
     Optional<Weight> findByUserAndDate(User user, LocalDate date);
 
+    Optional<Weight> findFirstByUserIdOrderByDateDesc(Long id);
+
 }

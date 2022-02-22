@@ -2,6 +2,7 @@ package training_manager.demo.entity;
 
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import training_manager.demo.enums.TrainingTypeEnum;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,17 +16,17 @@ import java.util.Set;
 @Builder
 public class User extends AbstractEntity {
 
-    private int height;
-
-    private String trainingType;
-
-    private int starting_weight;
-
     @Column(unique = true, nullable = false, updatable = false)
     private String nickname;
 
     @Column(nullable = false)
     private String password;
+
+    private int firstWeight;
+
+    private int height;
+
+    private TrainingTypeEnum trainingType;
 
     @Builder.Default
     @EqualsAndHashCode.Exclude
