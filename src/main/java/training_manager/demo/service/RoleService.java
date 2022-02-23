@@ -2,6 +2,7 @@ package training_manager.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import training_manager.demo.dto.RoleDTO;
 import training_manager.demo.entity.Role;
 import training_manager.demo.enums.RoleEnum;
 import training_manager.demo.exception.NoSuchRoleException;
@@ -9,7 +10,7 @@ import training_manager.demo.repository.RoleRepository;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService implements CUDService<Role> {
+public class RoleService implements CUDService<Role, RoleDTO> {
 
     private final RoleRepository repository;
 
@@ -20,18 +21,19 @@ public class RoleService implements CUDService<Role> {
     }
 
     @Override
-    public Role create(Role entity) {
-        return repository.save(entity);
+    public RoleDTO create(Role entity) {
+        Role role = repository.save(entity);
+        return new RoleDTO(role.getId(), role.getRole());
     }
 
     @Override
-    public Role update(Role entity) {
-        return repository.save(entity);
+    public RoleDTO update(RoleDTO entity) {
+        throw new NoSuchRoleException();
     }
 
     @Override
-    public void delete(Role entity) {
-        repository.delete(entity);
+    public void delete(RoleDTO entity) {
+        repository.deleteById(findByRole(entity.getRole()).getId());
     }
 
 }

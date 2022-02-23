@@ -10,7 +10,7 @@ public enum MuscleGroupEnum {
     ABDOMINAL("Живот"),
     LEG("Ноги");
 
-    private String name;
+    private final String name;
 
     MuscleGroupEnum(String name) {
         this.name = name;

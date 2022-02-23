@@ -30,7 +30,5 @@ class TrainingDayRepositoryTest {
         trainingDay.setDescriptionExercises("new excersice");
         user.addTrainingDay(trainingDay);
         userRepository.save(user);
-
-
     }
 }

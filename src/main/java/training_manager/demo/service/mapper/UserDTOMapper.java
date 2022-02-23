@@ -3,11 +3,8 @@ package training_manager.demo.service.mapper;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import training_manager.demo.dto.BodyMeasurementDTO;
 import training_manager.demo.dto.UserDTO;
-import training_manager.demo.entity.BodyMeasurement;
 import training_manager.demo.entity.User;
-import training_manager.demo.service.UserSerivce;
 import training_manager.demo.service.WeightService;
 
 @Data

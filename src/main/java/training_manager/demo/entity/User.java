@@ -65,6 +65,10 @@ public class User extends AbstractEntity {
 
     private Long telegramId;
 
+    public User(String nickname, String password) {
+        this.nickname = nickname;
+        this.password = password;
+    }
 
     protected void addRole(Role role) {
         roles.add(role);

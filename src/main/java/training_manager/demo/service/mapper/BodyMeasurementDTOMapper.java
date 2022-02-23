@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.BodyMeasurementDTO;
 import training_manager.demo.entity.BodyMeasurement;
-import training_manager.demo.service.UserSerivce;
+import training_manager.demo.service.UserService;
 
 @Data
 @Component
@@ -13,7 +13,7 @@ public class BodyMeasurementDTOMapper implements EntityToDTOMapper<BodyMeasureme
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    private final UserSerivce userSerivce;
+    private final UserService userSerivce;
 
     @Override
     public BodyMeasurementDTO toDTO(BodyMeasurement entity, Object... args) {

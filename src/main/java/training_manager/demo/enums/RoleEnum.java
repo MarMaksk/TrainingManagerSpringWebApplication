@@ -5,7 +5,7 @@ public enum RoleEnum {
     ROLE_HELPER("Помощник"),
     ROLE_ADMIN("Администратор");
 
-    private String name;
+    private final String name;
 
     RoleEnum(String name) {
         this.name = name;

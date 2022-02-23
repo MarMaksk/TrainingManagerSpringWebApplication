@@ -1,9 +1,9 @@
 package training_manager.demo.service;
 
-public interface CUDService<T> {
-    T create(T entity);
+public interface CUDService<E, D> {
+    D create(E entity);
 
-    T update(T entity);
+    D update(D entity);
 
-    void delete(T entity);
+    void delete(D entity);
 }

@@ -2,17 +2,21 @@ package training_manager.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import training_manager.demo.dto.UserDTO;
 import training_manager.demo.entity.User;
 import training_manager.demo.exception.NoSuchUserException;
 import training_manager.demo.repository.UserRepository;
+import training_manager.demo.service.mapper.UserDTOMapper;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserSerivce implements CUDService<User> {
+public class UserService implements CUDService<User, UserDTO> {
 
     private final UserRepository repository;
+
+    private final UserDTOMapper mapper;
 
     public User findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NoSuchUserException(
@@ -33,17 +37,17 @@ public class UserSerivce implements CUDService<User> {
     }
 
     @Override
-    public User create(User entity) {
-        return repository.save(entity);
+    public UserDTO create(User entity) {
+        return mapper.toDTO(repository.save(entity));
     }
 
     @Override
-    public User update(User entity) {
-        return repository.save(entity);
+    public UserDTO update(UserDTO entity) {
+        return mapper.toDTO(repository.save(mapper.toEntity(entity)));
     }
 
     @Override
-    public void delete(User entity) {
-        repository.delete(entity);
+    public void delete(UserDTO entity) {
+        repository.delete(mapper.toEntity(entity));
     }
 }

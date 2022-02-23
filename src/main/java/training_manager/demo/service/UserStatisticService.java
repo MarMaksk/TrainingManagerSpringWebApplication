@@ -2,19 +2,23 @@ package training_manager.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import training_manager.demo.dto.UserStatisticDTO;
 import training_manager.demo.entity.UserStatistic;
 import training_manager.demo.enums.MuscleGroupEnum;
 import training_manager.demo.exception.NoSuchUserStatisticException;
 import training_manager.demo.repository.UserStatisticRepository;
+import training_manager.demo.service.mapper.UserStatisticDTOMapper;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserStatisticService implements CUDService<UserStatistic> {
+public class UserStatisticService implements CUDService<UserStatistic, UserStatisticDTO> {
 
     private final UserStatisticRepository repository;
+
+    private final UserStatisticDTOMapper mapper;
 
     public List<UserStatistic> findALl() {
         return repository.findAll();
@@ -37,17 +41,17 @@ public class UserStatisticService implements CUDService<UserStatistic> {
     }
 
     @Override
-    public UserStatistic create(UserStatistic entity) {
-        return repository.save(entity);
+    public UserStatisticDTO create(UserStatistic entity) {
+        return mapper.toDTO(repository.save(entity));
     }
 
     @Override
-    public UserStatistic update(UserStatistic entity) {
-        return repository.save(entity);
+    public UserStatisticDTO update(UserStatisticDTO entity) {
+        return mapper.toDTO(repository.save(mapper.toEntity(entity)));
     }
 
     @Override
-    public void delete(UserStatistic entity) {
-        repository.delete(entity);
+    public void delete(UserStatisticDTO entity) {
+        repository.delete(mapper.toEntity(entity));
     }
 }
