@@ -1,4 +1,4 @@
-package training_manager.demo.service;
+package training_manager.demo.service.entity_service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.entity.TrainingDay;
 import training_manager.demo.entity.User;
 import training_manager.demo.enums.MuscleGroupEnum;
-import training_manager.demo.exception.NoSuchTrainingDayException;
+import training_manager.demo.exception.no_such.NoSuchTrainingDayException;
 import training_manager.demo.repository.TrainingDayRepository;
 import training_manager.demo.service.mapper.TrainingDayDTOMapper;
 
@@ -20,22 +20,24 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
 
     private final TrainingDayDTOMapper mapper;
 
-    public List<TrainingDay> findByUser(User user) {
-        return repository.findAllByUserOrderByDay(user);
+    public List<TrainingDayDTO> findByUser(User user) {
+        return mapper.toDTOs(repository.findAllByUserOrderByDay(user));
     }
 
-    public TrainingDay findByUserAndDay(User user, int day) {
-        return repository.findByUserAndDay(user, day).orElseThrow(() -> new NoSuchTrainingDayException(
+    public TrainingDayDTO findByUserAndDay(User user, int day) {
+        TrainingDay trainingDay = repository.findByUserAndDay(user, day).orElseThrow(() -> new NoSuchTrainingDayException(
                 String.format("No such training day with user id %d and day %d", user.getId(), day)
         ));
+        return mapper.toDTO(trainingDay);
     }
 
-    public TrainingDay findByUserAndDayAndMuscleGroup(Long userId, int day, MuscleGroupEnum muscleGroup) {
-        return repository.findByUserAndDayAndMuscleGroup(userId, day, muscleGroup)
+    public TrainingDayDTO findByUserAndDayAndMuscleGroup(Long userId, int day, MuscleGroupEnum muscleGroup) {
+        TrainingDay trainingDay = repository.findByUserAndDayAndMuscleGroup(userId, day, muscleGroup)
                 .orElseThrow(() -> new NoSuchTrainingDayException(
                         String.format("No such training day with user id %d and day %d and muscle group name %s",
                                 userId, day, muscleGroup.name())
                 ));
+        return mapper.toDTO(trainingDay);
     }
 
     @Override
@@ -44,12 +46,12 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     }
 
     @Override
-    public TrainingDayDTO update(TrainingDayDTO entity) {
-        return mapper.toDTO(repository.save(mapper.toEntity(entity)));
+    public TrainingDayDTO update(TrainingDayDTO dto) {
+        return mapper.toDTO(repository.save(mapper.toEntity(dto)));
     }
 
     @Override
-    public void delete(TrainingDayDTO entity) {
-        repository.delete(mapper.toEntity(entity));
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

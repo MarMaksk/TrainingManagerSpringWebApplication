@@ -32,7 +32,7 @@ public class TrainingDay extends AbstractEntity {
 
     private int lastWeight; //Какой был последний вес
 
-    private LocalDate lastDate = LocalDate.now(); //Когда последний раз делалось
+    private LocalDate lastDate; //Когда последний раз делалось
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
@@ -41,6 +41,13 @@ public class TrainingDay extends AbstractEntity {
             fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PrePersist
+    public void prePersist() {
+        if (lastDate == null) {
+            lastDate = LocalDate.now();
+        }
+    }
 
     public void addMuscle(Muscle muscle) {
         this.muscle = muscle;

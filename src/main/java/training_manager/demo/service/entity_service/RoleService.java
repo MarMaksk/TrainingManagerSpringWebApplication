@@ -1,11 +1,11 @@
-package training_manager.demo.service;
+package training_manager.demo.service.entity_service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.RoleDTO;
 import training_manager.demo.entity.Role;
 import training_manager.demo.enums.RoleEnum;
-import training_manager.demo.exception.NoSuchRoleException;
+import training_manager.demo.exception.no_such.NoSuchRoleException;
 import training_manager.demo.repository.RoleRepository;
 
 @Service
@@ -14,10 +14,11 @@ public class RoleService implements CUDService<Role, RoleDTO> {
 
     private final RoleRepository repository;
 
-    public Role findByRole(RoleEnum roleEnum) {
-        return repository.findByRole(roleEnum).orElseThrow(() -> new NoSuchRoleException(
+    public RoleDTO findByRole(RoleEnum roleEnum) {
+        Role role = repository.findByRole(roleEnum).orElseThrow(() -> new NoSuchRoleException(
                 String.format("No such role with name: %s", roleEnum.name())
         ));
+        return new RoleDTO(role.getId(), role.getRole());
     }
 
     @Override
@@ -27,13 +28,13 @@ public class RoleService implements CUDService<Role, RoleDTO> {
     }
 
     @Override
-    public RoleDTO update(RoleDTO entity) {
+    public RoleDTO update(RoleDTO dto) {
         throw new NoSuchRoleException();
     }
 
     @Override
-    public void delete(RoleDTO entity) {
-        repository.deleteById(findByRole(entity.getRole()).getId());
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 
 }

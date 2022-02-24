@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "users_statistic")
 public class UserStatistic extends AbstractEntity {
 
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
 
     private int weight;
 
@@ -31,5 +31,12 @@ public class UserStatistic extends AbstractEntity {
             fetch = FetchType.EAGER)
     @JoinColumn(name = "muscle_id")
     private Muscle muscle;
+
+    @PrePersist
+    public void prePersist() {
+        if (date == null) {
+            date = LocalDate.now();
+        }
+    }
 
 }

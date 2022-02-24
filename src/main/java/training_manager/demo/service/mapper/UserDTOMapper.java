@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.UserDTO;
 import training_manager.demo.entity.User;
-import training_manager.demo.service.WeightService;
+import training_manager.demo.service.entity_service.WeightService;
 
 @Data
 @Component

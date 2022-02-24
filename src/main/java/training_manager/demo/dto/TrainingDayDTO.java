@@ -3,6 +3,7 @@ package training_manager.demo.dto;
 import lombok.Data;
 import training_manager.demo.enums.MuscleGroupEnum;
 
+import javax.persistence.PrePersist;
 import java.time.LocalDate;
 
 @Data
@@ -32,8 +33,14 @@ public class TrainingDayDTO {
     /**
      * Дата последнего занятия
      */
-    private LocalDate lastDate = LocalDate.now();
+    private LocalDate lastDate;
 
     private Long userId;
 
+    @PrePersist
+    public void prePersist() {
+        if (lastDate == null) {
+            lastDate = LocalDate.now();
+        }
+    }
 }

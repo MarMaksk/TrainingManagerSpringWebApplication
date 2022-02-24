@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.BodyMeasurementDTO;
 import training_manager.demo.entity.BodyMeasurement;
-import training_manager.demo.service.UserService;
+import training_manager.demo.service.entity_service.UserService;
 
 @Data
 @Component
@@ -24,8 +24,6 @@ public class BodyMeasurementDTOMapper implements EntityToDTOMapper<BodyMeasureme
 
     @Override
     public BodyMeasurement toEntity(BodyMeasurementDTO dto, Object... args) {
-        BodyMeasurement entity = modelMapper.map(dto, BodyMeasurement.class);
-        entity.setUser(userSerivce.findById(dto.getUserId()));
-        return entity;
+        return modelMapper.map(dto, BodyMeasurement.class);
     }
 }

@@ -1,4 +1,3 @@
-
 package training_manager.demo.entity;
 
 import lombok.*;

@@ -1,11 +1,10 @@
-package training_manager.demo.service;
+package training_manager.demo.service.entity_service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.WeightDTO;
-import training_manager.demo.entity.User;
 import training_manager.demo.entity.Weight;
-import training_manager.demo.exception.NoSuchWeightException;
+import training_manager.demo.exception.no_such.NoSuchWeightException;
 import training_manager.demo.repository.WeightRepository;
 import training_manager.demo.service.mapper.WeightDTOMapper;
 
@@ -20,19 +19,21 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
 
     private final WeightDTOMapper mapper;
 
-    public List<Weight> findAllUserWeight(Long userId) {
-        return repository.findByUserId(userId);
+    public List<WeightDTO> findAllUserWeight(Long userId) {
+        return mapper.toDTOs(repository.findByUserId(userId));
     }
 
-    public Weight findByUserAndDate(Long userId, LocalDate date) {
-        return repository.findByUserIdAndDate(userId, date).orElseThrow(() -> new NoSuchWeightException(
+    public WeightDTO findByUserAndDate(Long userId, LocalDate date) {
+        Weight weight = repository.findByUserIdAndDate(userId, date).orElseThrow(() -> new NoSuchWeightException(
                 String.format("No such weight with user id %d and date %s", userId, date.toString())
         ));
+        return mapper.toDTO(weight);
     }
 
-    public Weight findByUserLastWeight(Long id) {
-        return repository.findFirstByUserIdOrderByDateDesc(id)
+    public WeightDTO findByUserLastWeight(Long id) {
+        Weight weight = repository.findFirstByUserIdOrderByDateDesc(id)
                 .orElseThrow(NoSuchWeightException::new);
+        return mapper.toDTO(weight);
     }
 
     @Override
@@ -41,12 +42,12 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
     }
 
     @Override
-    public WeightDTO update(WeightDTO entity) {
-        return mapper.toDTO(repository.save(mapper.toEntity(entity)));
+    public WeightDTO update(WeightDTO dto) {
+        return mapper.toDTO(repository.save(mapper.toEntity(dto)));
     }
 
     @Override
-    public void delete(WeightDTO entity) {
-        repository.delete(mapper.toEntity(entity));
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

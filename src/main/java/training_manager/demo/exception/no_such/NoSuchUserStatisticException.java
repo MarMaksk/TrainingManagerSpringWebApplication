@@ -1,4 +1,4 @@
-package training_manager.demo.exception;
+package training_manager.demo.exception.no_such;
 
 public class NoSuchUserStatisticException extends RuntimeException {
     public NoSuchUserStatisticException() {

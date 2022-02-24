@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Weight extends AbstractEntity {
 
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
 
     @Column(nullable = false)
     private int weight;
@@ -31,5 +31,12 @@ public class Weight extends AbstractEntity {
     public Weight(int weight, User user) {
         this.weight = weight;
         this.user = user;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (date == null) {
+            date = LocalDate.now();
+        }
     }
 }

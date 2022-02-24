@@ -2,6 +2,7 @@ package training_manager.demo.dto;
 
 import lombok.Data;
 
+import javax.persistence.PrePersist;
 import java.time.LocalDate;
 
 @Data
@@ -19,5 +20,10 @@ public class BodyMeasurementDTO {
 
     private Long userId;
 
-
+    @PrePersist
+    public void prePersist() {
+        if (date == null) {
+            setDate(LocalDate.now());
+        }
+    }
 }

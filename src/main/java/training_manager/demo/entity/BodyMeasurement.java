@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BodyMeasurement extends AbstractEntity {
 
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
 
     private int chest;
     private int waist;
@@ -28,4 +28,11 @@ public class BodyMeasurement extends AbstractEntity {
             fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PrePersist
+    public void prePersist() {
+        if (date == null) {
+            date = LocalDate.now();
+        }
+    }
 }
