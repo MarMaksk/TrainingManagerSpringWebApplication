@@ -6,8 +6,10 @@ import training_manager.demo.dto.WeightDTO;
 import training_manager.demo.entity.Weight;
 import training_manager.demo.exception.no_such.NoSuchWeightException;
 import training_manager.demo.repository.WeightRepository;
+import training_manager.demo.service.mapper.NullTrackingMapperDTO;
 import training_manager.demo.service.mapper.WeightDTOMapper;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,13 +18,15 @@ import java.util.List;
 public class WeightService implements CUDService<Weight, WeightDTO> {
 
     private final WeightRepository repository;
-
     private final WeightDTOMapper mapper;
+    private final NullTrackingMapperDTO nullTrackingMapper;
 
+    @Transactional
     public List<WeightDTO> findAllUserWeight(Long userId) {
         return mapper.toDTOs(repository.findByUserId(userId));
     }
 
+    @Transactional
     public WeightDTO findByUserAndDate(Long userId, LocalDate date) {
         Weight weight = repository.findByUserIdAndDate(userId, date).orElseThrow(() -> new NoSuchWeightException(
                 String.format("No such weight with user id %d and date %s", userId, date.toString())
@@ -30,6 +34,7 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
         return mapper.toDTO(weight);
     }
 
+    @Transactional
     public WeightDTO findByUserLastWeight(Long id) {
         Weight weight = repository.findFirstByUserIdOrderByDateDesc(id)
                 .orElseThrow(NoSuchWeightException::new);
@@ -43,7 +48,9 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
 
     @Override
     public WeightDTO update(WeightDTO dto) {
-        return mapper.toDTO(repository.save(mapper.toEntity(dto)));
+        Weight weight = repository.findByUserIdAndDate(dto.getUserId(), dto.getLocalDate()).orElseGet(Weight::new);
+        Weight entity = nullTrackingMapper.toEntity(weight, dto);
+        return mapper.toDTO(repository.save(entity));
     }
 
     @Override

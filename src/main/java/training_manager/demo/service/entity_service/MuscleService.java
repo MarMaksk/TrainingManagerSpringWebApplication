@@ -8,15 +8,19 @@ import training_manager.demo.enums.MuscleGroupEnum;
 import training_manager.demo.exception.no_such.NoSuchMuscleException;
 import training_manager.demo.repository.MuscleRepository;
 import training_manager.demo.service.mapper.MuscleDTOMapper;
+import training_manager.demo.service.mapper.NullTrackingMapperDTO;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MuscleService implements CUDService<Muscle, MuscleDTO> {
 
     private final MuscleRepository repository;
-
     private final MuscleDTOMapper mapper;
+    private final NullTrackingMapperDTO nullTrackingMapper;
 
+    @Transactional
     public MuscleDTO findMuscleByGroup(MuscleGroupEnum muscleGroup) {
         Muscle muscle = repository.findByMuscleGroup(muscleGroup).orElseThrow(() -> new NoSuchMuscleException(
                 String.format("No such muscle with muscle group: %s", muscleGroup.name())
@@ -31,7 +35,9 @@ public class MuscleService implements CUDService<Muscle, MuscleDTO> {
 
     @Override
     public MuscleDTO update(MuscleDTO dto) {
-        return mapper.toDTO(repository.save(mapper.toEntity(dto)));
+        Muscle muscle = repository.findById(dto.getId()).orElseThrow(NoSuchMuscleException::new);
+        nullTrackingMapper.toEntity(muscle, dto);
+        return mapper.toDTO(repository.save(muscle));
     }
 
     @Override

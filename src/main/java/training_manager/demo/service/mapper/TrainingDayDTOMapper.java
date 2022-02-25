@@ -15,8 +15,10 @@ public class TrainingDayDTOMapper implements EntityToDTOMapper<TrainingDayDTO, T
     @Override
     public TrainingDayDTO toDTO(TrainingDay entity, Object... args) {
         TrainingDayDTO dto = modelMapper.map(entity, TrainingDayDTO.class);
-        dto.setMuscle(entity.getMuscle().getMuscleGroup());
-        dto.setUserId(entity.getUser().getId());
+        if (entity.getMuscle() != null)
+            dto.setMuscle(entity.getMuscle().getMuscleGroup());
+        if (entity.getUser() != null)
+            dto.setUserId(entity.getUser().getId());
         return dto;
     }
 

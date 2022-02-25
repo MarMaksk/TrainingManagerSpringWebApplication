@@ -8,12 +8,15 @@ import training_manager.demo.enums.RoleEnum;
 import training_manager.demo.exception.no_such.NoSuchRoleException;
 import training_manager.demo.repository.RoleRepository;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class RoleService implements CUDService<Role, RoleDTO> {
 
     private final RoleRepository repository;
 
+    @Transactional
     public RoleDTO findByRole(RoleEnum roleEnum) {
         Role role = repository.findByRole(roleEnum).orElseThrow(() -> new NoSuchRoleException(
                 String.format("No such role with name: %s", roleEnum.name())

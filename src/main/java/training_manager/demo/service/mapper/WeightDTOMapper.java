@@ -15,7 +15,8 @@ public class WeightDTOMapper implements EntityToDTOMapper<WeightDTO, Weight> {
     @Override
     public WeightDTO toDTO(Weight entity, Object... args) {
         WeightDTO dto = modelMapper.map(entity, WeightDTO.class);
-        dto.setUserId(entity.getUser().getId());
+        if (entity.getUser() != null)
+            dto.setUserId(entity.getUser().getId());
         return dto;
     }
 
