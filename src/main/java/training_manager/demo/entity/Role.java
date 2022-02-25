@@ -3,7 +3,10 @@ package training_manager.demo.entity;
 import lombok.*;
 import training_manager.demo.enums.RoleEnum;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,10 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = "roles")
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Role extends AbstractEntity {
 
     @Column(nullable = false)
     private RoleEnum role;

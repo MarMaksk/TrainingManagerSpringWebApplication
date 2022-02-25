@@ -8,13 +8,9 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "users_statistic")
-public class UserStatistic {
+public class UserStatistic extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
 
     private int weight;
 
@@ -23,15 +19,24 @@ public class UserStatistic {
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH},
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH},
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "muscle_id")
     private Muscle muscle;
+
+    @PrePersist
+    public void prePersist() {
+        if (date == null) {
+            date = LocalDate.now();
+        }
+    }
 
 }

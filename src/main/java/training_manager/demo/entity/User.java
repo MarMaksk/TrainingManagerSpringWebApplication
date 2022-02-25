@@ -1,33 +1,42 @@
 package training_manager.demo.entity;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
+import training_manager.demo.enums.TrainingTypeEnum;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private int height;
-
-    private String trainingType;
-
-    private int starting_weight;
+public class User extends AbstractEntity {
 
     @Column(unique = true, nullable = false, updatable = false)
     private String nickname;
 
     @Column(nullable = false)
     private String password;
+
+    private LocalDate registrationDate;
+
+    private int firstWeight;
+
+    private int height;
+
+    private TrainingTypeEnum trainingType;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    private Set<BodyMeasurement> bodyMeasurements = new HashSet<>();
 
     @Builder.Default
     @EqualsAndHashCode.Exclude
@@ -49,13 +58,9 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
+    @BatchSize(size = 7)
     private Set<TrainingDay> trainingDays = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @Builder.Default
-    private Set<BodyMeasurement> bodyMeasurements = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
@@ -65,6 +70,16 @@ public class User {
 
     private Long telegramId;
 
+    public User(String nickname, String password) {
+        this.nickname = nickname;
+        this.password = password;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (registrationDate == null)
+            registrationDate = LocalDate.now();
+    }
 
     protected void addRole(Role role) {
         roles.add(role);
@@ -102,5 +117,18 @@ public class User {
     public void removeBodyMeasurement(BodyMeasurement bodyMeasurement) {
         this.bodyMeasurements.remove(bodyMeasurement);
         bodyMeasurement.setUser(null);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + super.getId() + '\'' +
+                "nickname='" + nickname + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", firstWeight=" + firstWeight +
+                ", height=" + height +
+                ", trainingType=" + trainingType +
+                ", telegramId=" + telegramId +
+                '}';
     }
 }
