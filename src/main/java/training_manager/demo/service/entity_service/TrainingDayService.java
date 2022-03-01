@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.entity.TrainingDay;
-import training_manager.demo.entity.User;
 import training_manager.demo.enums.MuscleGroupEnum;
 import training_manager.demo.exception.no_such.NoSuchTrainingDayException;
 import training_manager.demo.repository.TrainingDayRepository;
@@ -23,14 +22,14 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     private final NullTrackingMapperDTO nullTrackingMapper;
 
     @Transactional
-    public List<TrainingDayDTO> findByUser(User user) {
-        return mapper.toDTOs(repository.findAllByUserOrderByDay(user));
+    public List<TrainingDayDTO> findByUserId(Long id) {
+        return mapper.toDTOs(repository.findAllByUserIdOrderByDay(id));
     }
 
     @Transactional
-    public TrainingDayDTO findByUserAndDay(User user, int day) {
-        TrainingDay trainingDay = repository.findByUserAndDay(user, day).orElseThrow(() -> new NoSuchTrainingDayException(
-                String.format("No such training day with user id %d and day %d", user.getId(), day)
+    public TrainingDayDTO findByUserAndDay(Long id, int day) {
+        TrainingDay trainingDay = repository.findByUserIdAndDay(id, day).orElseThrow(() -> new NoSuchTrainingDayException(
+                String.format("No such training day with user id %d and day %d", id, day)
         ));
         return mapper.toDTO(trainingDay);
     }

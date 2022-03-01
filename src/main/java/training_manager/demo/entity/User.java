@@ -1,5 +1,6 @@
 package training_manager.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import training_manager.demo.enums.TrainingTypeEnum;

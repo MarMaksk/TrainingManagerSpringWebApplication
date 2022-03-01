@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+<body>
+<h2>
+    Hi
+</h2>
+<button th:action="@{/show_training}" th:type="submit" th:method="get">Посмотреть тренировки</button>
+<button>Добавить тренировку</button>
+<button>Добавить замеры веса</button>
+<button>Добавить замеры объемов</button>
+<div>
+
+</div>
+
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 package training_manager.demo.exception.no_such;
 
-public class NoSuchWeightException extends RuntimeException {
+public class NoSuchWeightException extends TrainingEntityException {
     public NoSuchWeightException() {
         super("No such weight");
     }

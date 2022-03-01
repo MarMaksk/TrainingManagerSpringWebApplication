@@ -35,19 +35,14 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
     }
 
     @Override
-    @Transactional
     public BodyMeasurementDTO create(BodyMeasurement entity) {
         return mapper.toDTO(repository.save(entity));
     }
 
     @Override
-    @Transactional
     public BodyMeasurementDTO update(BodyMeasurementDTO dto) {
         BodyMeasurement entity = repository.findByUserIdAndDate(dto.getUserId(), dto.getDate()).orElseGet(BodyMeasurement::new);
-        System.out.println(entity);
-        System.out.println(dto);
         nullTrackingMapper.toEntity(entity, dto);
-        System.out.println(entity);
         return mapper.toDTO(repository.save(entity));
     }
 

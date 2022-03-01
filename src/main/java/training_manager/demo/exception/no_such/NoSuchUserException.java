@@ -1,6 +1,6 @@
 package training_manager.demo.exception.no_such;
 
-public class NoSuchUserException extends RuntimeException {
+public class NoSuchUserException extends TrainingEntityException {
 
     public NoSuchUserException() {
         super("No such user");
