@@ -52,8 +52,8 @@ public class UserService implements CUDService<User, UserDTO> {
     @Override
     public UserDTO update(UserDTO dto) {
         User user = repository.findById(dto.getId()).orElseThrow(NoSuchUserException::new);
-        User entity = nullTrackingMapper.toEntity(user, dto);
-        return mapper.toDTO(repository.save(entity));
+        nullTrackingMapper.toEntity(user, dto);
+        return mapper.toDTO(repository.save(user));
     }
 
     @Override

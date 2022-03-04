@@ -1,26 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
-<style>
-    .hidden {
-        display: none;
-    }
-</style>
 <body>
+<input type="number" value="1" id="userId" class="hidden">
 <h2>
     Hi
 </h2>
-<button th:action="@{/show_training}" th:type="submit" th:method="get">Посмотреть тренировки</button>
-<button>Добавить тренировку</button>
 <button>Добавить замеры веса</button>
 <button>Добавить замеры объемов</button>
-<div>
+<div class="btn-group" role="group">
+    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        Тренировки
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <li><a class="dropdown-item show-training" href="#">Показать всё</a></li>
+        <li><a class="dropdown-item add-training" href="#">Добавить тренировку</a></li>
+    </ul>
+</div>
+<div class="show">
 
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script th:src="@{showdata.js}"></script>
 </body>
 </html>

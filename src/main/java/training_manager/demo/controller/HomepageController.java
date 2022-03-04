@@ -2,14 +2,17 @@ package training_manager.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.service.entity_service.TrainingDayService;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/home")
+@RequestMapping
 @RequiredArgsConstructor
 public class HomepageController {
 
@@ -20,9 +23,15 @@ public class HomepageController {
         return "homepage";
     }
 
-    @GetMapping("/show_training")
-    public String showTraining(@RequestParam Long id, Model model) {
-        model.addAttribute("trainings", trainingDayService.findByUserId(id));
-        return "showTraining";
+    @PostMapping("/show_training")
+    @ResponseBody
+    public List<TrainingDayDTO> showTraining(@RequestBody Long id) {
+        return trainingDayService.findByUserId(id);
+    }
+
+    @PostMapping("/change_training")
+    @ResponseBody
+    public TrainingDayDTO changeTraining(@RequestBody TrainingDayDTO training) {
+        return trainingDayService.update(training);
     }
 }

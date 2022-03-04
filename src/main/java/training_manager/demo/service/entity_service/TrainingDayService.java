@@ -6,7 +6,9 @@ import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.entity.TrainingDay;
 import training_manager.demo.enums.MuscleGroupEnum;
 import training_manager.demo.exception.no_such.NoSuchTrainingDayException;
+import training_manager.demo.exception.no_such.NoSuchUserException;
 import training_manager.demo.repository.TrainingDayRepository;
+import training_manager.demo.repository.UserRepository;
 import training_manager.demo.service.mapper.NullTrackingMapperDTO;
 import training_manager.demo.service.mapper.TrainingDayDTOMapper;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDTO> {
 
     private final TrainingDayRepository repository;
+    private final UserRepository userRepository;
     private final TrainingDayDTOMapper mapper;
     private final NullTrackingMapperDTO nullTrackingMapper;
 
@@ -54,8 +57,9 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
         TrainingDay trainingDay = repository
                 .findByUserIdAndDayAndMuscleGroup(dto.getUserId(), dto.getDay(), dto.getMuscle())
                 .orElseGet(TrainingDay::new);
-        TrainingDay entity = nullTrackingMapper.toEntity(trainingDay, dto);
-        return mapper.toDTO(repository.save(entity));
+        trainingDay.setUser(userRepository.findById(dto.getUserId()).orElseThrow(NoSuchUserException::new));
+        nullTrackingMapper.toEntity(trainingDay, dto);
+        return mapper.toDTO(repository.save(trainingDay));
     }
 
     @Override

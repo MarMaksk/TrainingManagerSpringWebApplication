@@ -49,8 +49,8 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
     @Override
     public WeightDTO update(WeightDTO dto) {
         Weight weight = repository.findByUserIdAndDate(dto.getUserId(), dto.getLocalDate()).orElseGet(Weight::new);
-        Weight entity = nullTrackingMapper.toEntity(weight, dto);
-        return mapper.toDTO(repository.save(entity));
+        nullTrackingMapper.toEntity(weight, dto);
+        return mapper.toDTO(repository.save(weight));
     }
 
     @Override

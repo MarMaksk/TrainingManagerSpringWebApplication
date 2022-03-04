@@ -57,8 +57,8 @@ public class UserStatisticService implements CUDService<UserStatistic, UserStati
         UserStatistic userStatistic = repository
                 .findByUserIdAndDataAndMuscleGroup(dto.getUserId(), dto.getMuscleGroup(), dto.getDate())
                 .orElseGet(UserStatistic::new);
-        UserStatistic entity = nullTrackingMapper.toEntity(userStatistic, dto);
-        return mapper.toDTO(repository.save(entity));
+        nullTrackingMapper.toEntity(userStatistic, dto);
+        return mapper.toDTO(repository.save(userStatistic));
     }
 
     @Override
