@@ -1,6 +1,6 @@
 package training_manager.demo.exception;
 
-public class OverloadException extends RuntimeException {
+public class OverloadException extends OverParamException {
     public OverloadException() {
         super("Overload weight. Take care of yourself");
     }

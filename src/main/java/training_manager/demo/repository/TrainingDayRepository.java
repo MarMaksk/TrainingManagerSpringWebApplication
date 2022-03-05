@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import training_manager.demo.entity.TrainingDay;
-import training_manager.demo.entity.User;
 import training_manager.demo.enums.MuscleGroupEnum;
 
 import java.util.List;
@@ -14,9 +13,9 @@ import java.util.Optional;
 @Repository
 public interface TrainingDayRepository extends JpaRepository<TrainingDay, Long> {
 
-    List<TrainingDay> findAllByUserOrderByDay(User user);
+    List<TrainingDay> findAllByUserIdOrderByDay(Long id);
 
-    Optional<TrainingDay> findByUserAndDay(User user, int day);
+    Optional<TrainingDay> findByUserIdAndDay(Long id, int day);
 
     @Query("from TrainingDay td " +
             "join td.muscle m " +

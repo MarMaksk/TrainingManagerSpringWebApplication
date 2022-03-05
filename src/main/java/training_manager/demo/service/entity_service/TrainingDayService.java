@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.entity.TrainingDay;
-import training_manager.demo.entity.User;
 import training_manager.demo.enums.MuscleGroupEnum;
 import training_manager.demo.exception.no_such.NoSuchTrainingDayException;
+import training_manager.demo.exception.no_such.NoSuchUserException;
 import training_manager.demo.repository.TrainingDayRepository;
+import training_manager.demo.repository.UserRepository;
 import training_manager.demo.service.mapper.NullTrackingMapperDTO;
 import training_manager.demo.service.mapper.TrainingDayDTOMapper;
 
@@ -19,18 +20,19 @@ import java.util.List;
 public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDTO> {
 
     private final TrainingDayRepository repository;
+    private final UserRepository userRepository;
     private final TrainingDayDTOMapper mapper;
     private final NullTrackingMapperDTO nullTrackingMapper;
 
     @Transactional
-    public List<TrainingDayDTO> findByUser(User user) {
-        return mapper.toDTOs(repository.findAllByUserOrderByDay(user));
+    public List<TrainingDayDTO> findByUserId(Long id) {
+        return mapper.toDTOs(repository.findAllByUserIdOrderByDay(id));
     }
 
     @Transactional
-    public TrainingDayDTO findByUserAndDay(User user, int day) {
-        TrainingDay trainingDay = repository.findByUserAndDay(user, day).orElseThrow(() -> new NoSuchTrainingDayException(
-                String.format("No such training day with user id %d and day %d", user.getId(), day)
+    public TrainingDayDTO findByUserAndDay(Long id, int day) {
+        TrainingDay trainingDay = repository.findByUserIdAndDay(id, day).orElseThrow(() -> new NoSuchTrainingDayException(
+                String.format("No such training day with user id %d and day %d", id, day)
         ));
         return mapper.toDTO(trainingDay);
     }
@@ -55,8 +57,9 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
         TrainingDay trainingDay = repository
                 .findByUserIdAndDayAndMuscleGroup(dto.getUserId(), dto.getDay(), dto.getMuscle())
                 .orElseGet(TrainingDay::new);
-        TrainingDay entity = nullTrackingMapper.toEntity(trainingDay, dto);
-        return mapper.toDTO(repository.save(entity));
+        trainingDay.setUser(userRepository.findById(dto.getUserId()).orElseThrow(NoSuchUserException::new));
+        nullTrackingMapper.toEntity(trainingDay, dto);
+        return mapper.toDTO(repository.save(trainingDay));
     }
 
     @Override

@@ -31,6 +31,7 @@ public class RoleService implements CUDService<Role, RoleDTO> {
     }
 
     @Override
+    @Deprecated
     public RoleDTO update(RoleDTO dto) {
         throw new NoSuchRoleException();
     }

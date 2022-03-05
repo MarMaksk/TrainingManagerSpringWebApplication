@@ -1,6 +1,6 @@
 package training_manager.demo.exception.no_such;
 
-public class NoSuchMuscleException extends RuntimeException {
+public class NoSuchMuscleException extends TrainingEntityException {
     public NoSuchMuscleException() {
         super("No such muscle exception");
     }

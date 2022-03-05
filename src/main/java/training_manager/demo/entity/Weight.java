@@ -19,11 +19,7 @@ public class Weight extends AbstractEntity {
     @Column(nullable = false)
     private int weight;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private User user;

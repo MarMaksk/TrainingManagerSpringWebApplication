@@ -15,11 +15,7 @@ public class TrainingDay extends AbstractEntity {
     @Column(nullable = false)
     private int day;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "muscle_id")
     private Muscle muscle;
 
@@ -34,11 +30,7 @@ public class TrainingDay extends AbstractEntity {
 
     private LocalDate lastDate; //Когда последний раз делалось
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -10,7 +10,7 @@ import training_manager.demo.entity.TrainingDay;
 @Component
 public class TrainingDayDTOMapper implements EntityToDTOMapper<TrainingDayDTO, TrainingDay> {
 
-    private ModelMapper modelMapper;
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public TrainingDayDTO toDTO(TrainingDay entity, Object... args) {
