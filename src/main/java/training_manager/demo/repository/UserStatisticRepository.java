@@ -32,7 +32,7 @@ public interface UserStatisticRepository extends JpaRepository<UserStatistic, Lo
     @Query("from UserStatistic us " +
             "join us.user user " +
             "join us.muscle mus " +
-            "where user.id = :id and mus.muscleGroup = :muscleGroup and us.date = :date")
+            "where user.id = :id and mus.muscle = :muscleGroup and us.date = :date")
     Optional<UserStatistic> findByUserIdAndDataAndMuscleGroup(@Param("id") Long userId,
                                                               @Param("muscleGroup") MuscleGroupEnum muscleGroup,
                                                               @Param("date") LocalDate date);

@@ -7,7 +7,7 @@ public enum MuscleGroupEnum {
     SHOULDERS("Плечи"),
     BACK("Спина"),
     CHEST("Грудь"),
-    ABDOMINAL("Живот"),
+    ABDOMINAL("Пресс"),
     LEG("Ноги");
 
     private final String name;

@@ -19,7 +19,7 @@ public class TrainingDayDTO {
 
     private int day;
 
-    private MuscleGroupEnum muscle;
+    private MuscleGroupEnum muscleGroup;
 
     private String descriptionExercises;
 
