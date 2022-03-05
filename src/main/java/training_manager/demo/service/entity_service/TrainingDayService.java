@@ -55,7 +55,7 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     @Override
     public TrainingDayDTO update(TrainingDayDTO dto) {
         TrainingDay trainingDay = repository
-                .findByUserIdAndDayAndMuscleGroup(dto.getUserId(), dto.getDay(), dto.getMuscle())
+                .findByUserIdAndDayAndMuscleGroup(dto.getUserId(), dto.getDay(), dto.getMuscleGroup())
                 .orElseGet(TrainingDay::new);
         trainingDay.setUser(userRepository.findById(dto.getUserId()).orElseThrow(NoSuchUserException::new));
         nullTrackingMapper.toEntity(trainingDay, dto);

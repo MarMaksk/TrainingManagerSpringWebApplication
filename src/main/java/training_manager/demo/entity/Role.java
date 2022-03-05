@@ -3,10 +3,7 @@ package training_manager.demo.entity;
 import lombok.*;
 import training_manager.demo.enums.RoleEnum;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,16 +21,7 @@ public class Role extends AbstractEntity {
     @Builder.Default
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany
+    @JoinColumn(name = "user_id")
     private Set<User> users = new HashSet<>();
-
-    public void addRole(User user) {
-        users.add(user);
-        user.addRole(this);
-    }
-
-    public void removeRole(User user) {
-        users.remove(user);
-        user.removeRole(this);
-    }
 }

@@ -15,7 +15,7 @@ public class MuscleDTOMapper implements EntityToDTOMapper<MuscleDTO, Muscle> {
     @Override
     public MuscleDTO toDTO(Muscle entity, Object... args) {
         MuscleDTO dto = modelMapper.map(entity, MuscleDTO.class);
-        dto.setMuscleGroup(entity.getMuscleGroup());
+        dto.setMuscleGroup(entity.getMuscle());
         return dto;
     }
 

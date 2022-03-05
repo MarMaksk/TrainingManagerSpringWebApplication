@@ -12,8 +12,6 @@ import training_manager.demo.enums.MuscleGroupEnum;
 @AllArgsConstructor
 public class MuscleDTO {
 
-    private Long id;
-
     private MuscleGroupEnum muscleGroup;
 
 }

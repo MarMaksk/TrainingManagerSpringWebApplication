@@ -18,10 +18,6 @@ public class HomepageController {
 
     private final TrainingDayService trainingDayService;
 
-    @RequestMapping
-    public String homepage() {
-        return "homepage";
-    }
 
     @PostMapping("/show_training")
     @ResponseBody
