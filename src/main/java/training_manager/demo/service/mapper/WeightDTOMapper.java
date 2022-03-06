@@ -2,6 +2,7 @@ package training_manager.demo.service.mapper;
 
 import lombok.Data;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.WeightDTO;
 import training_manager.demo.entity.Weight;
@@ -9,7 +10,7 @@ import training_manager.demo.entity.Weight;
 @Component
 @Data
 public class WeightDTOMapper implements EntityToDTOMapper<WeightDTO, Weight> {
-
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override

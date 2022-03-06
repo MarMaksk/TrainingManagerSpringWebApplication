@@ -2,6 +2,7 @@ package training_manager.demo.service.mapper;
 
 import lombok.Data;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.UserDTO;
 import training_manager.demo.entity.User;
@@ -10,9 +11,9 @@ import training_manager.demo.service.entity_service.WeightService;
 @Data
 @Component
 public class UserDTOMapper implements EntityToDTOMapper<UserDTO, User> {
-
-    private final ModelMapper modelMapper = new ModelMapper();
-
+    @Autowired
+    private final ModelMapper modelMapper;
+    @Autowired
     private final WeightService weightService;
 
     @Override

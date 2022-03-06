@@ -2,6 +2,7 @@ package training_manager.demo.service.mapper;
 
 import lombok.Data;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.UserStatisticDTO;
 import training_manager.demo.entity.UserStatistic;
@@ -9,7 +10,7 @@ import training_manager.demo.entity.UserStatistic;
 @Component
 @Data
 public class UserStatisticDTOMapper implements EntityToDTOMapper<UserStatisticDTO, UserStatistic> {
-
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override

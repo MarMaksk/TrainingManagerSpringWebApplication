@@ -7,6 +7,7 @@ import training_manager.demo.entity.TrainingDay;
 import training_manager.demo.enums.MuscleGroupEnum;
 import training_manager.demo.exception.no_such.NoSuchTrainingDayException;
 import training_manager.demo.exception.no_such.NoSuchUserException;
+import training_manager.demo.repository.MuscleRepository;
 import training_manager.demo.repository.TrainingDayRepository;
 import training_manager.demo.repository.UserRepository;
 import training_manager.demo.service.mapper.NullTrackingMapperDTO;
@@ -21,6 +22,7 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
 
     private final TrainingDayRepository repository;
     private final UserRepository userRepository;
+    private final MuscleRepository muscleRepository;
     private final TrainingDayDTOMapper mapper;
     private final NullTrackingMapperDTO nullTrackingMapper;
 
@@ -47,6 +49,13 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
         return mapper.toDTO(trainingDay);
     }
 
+    public void createFromDTO(TrainingDayDTO dto) {
+        TrainingDay entity = mapper.toEntity(dto);
+        entity.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
+        entity.setMuscle(muscleRepository.findByMuscle(dto.getMuscleGroup()).orElseThrow());
+        repository.save(entity);
+    }
+
     @Override
     public TrainingDayDTO create(TrainingDay entity) {
         return mapper.toDTO(repository.save(entity));
@@ -57,6 +66,7 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
         TrainingDay trainingDay = repository
                 .findByUserIdAndDayAndMuscleGroup(dto.getUserId(), dto.getDay(), dto.getMuscleGroup())
                 .orElseGet(TrainingDay::new);
+        nullTrackingMapper.toEntity(trainingDay, dto);
         trainingDay.setUser(userRepository.findById(dto.getUserId()).orElseThrow(NoSuchUserException::new));
         nullTrackingMapper.toEntity(trainingDay, dto);
         return mapper.toDTO(repository.save(trainingDay));
@@ -67,3 +77,4 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
         repository.deleteById(id);
     }
 }
+

@@ -2,6 +2,7 @@ package training_manager.demo.service.mapper;
 
 import lombok.Data;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.entity.TrainingDay;
@@ -9,8 +10,8 @@ import training_manager.demo.entity.TrainingDay;
 @Data
 @Component
 public class TrainingDayDTOMapper implements EntityToDTOMapper<TrainingDayDTO, TrainingDay> {
-
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public TrainingDayDTO toDTO(TrainingDay entity, Object... args) {
