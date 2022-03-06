@@ -1,6 +1,5 @@
 package training_manager.demo.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +16,10 @@ public class Muscle extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(unique = true)
-    private MuscleGroupEnum muscle;
+    private MuscleGroupEnum muscleGroup;
 
-    public Muscle(MuscleGroupEnum muscle) {
-        this.muscle = muscle;
+    public Muscle(MuscleGroupEnum muscleGroup) {
+        this.muscleGroup = muscleGroup;
     }
 
 }

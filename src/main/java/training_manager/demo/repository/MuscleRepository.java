@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface MuscleRepository extends JpaRepository<Muscle, Long> {
-    Optional<Muscle> findByMuscle(MuscleGroupEnum muscleGroup);
+    Optional<Muscle> findByMuscleGroup(MuscleGroupEnum muscleGroup);
 }

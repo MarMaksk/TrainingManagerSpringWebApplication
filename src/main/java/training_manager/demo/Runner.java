@@ -39,10 +39,10 @@ public class Runner {
     @PostConstruct
     @Transactional
     public void test() throws Exception {
-        muscleService.create(new Muscle(MuscleGroupEnum.ABDOMINAL));
-        muscleService.create(new Muscle(MuscleGroupEnum.BICEPS));
-        muscleService.create(new Muscle(MuscleGroupEnum.TRICEPS));
-        muscleService.create(new Muscle(MuscleGroupEnum.BACK));
+//        muscleService.create(new Muscle(MuscleGroupEnum.ABDOMINAL));
+//        muscleService.create(new Muscle(MuscleGroupEnum.BICEPS));
+//        muscleService.create(new Muscle(MuscleGroupEnum.TRICEPS));
+//        muscleService.create(new Muscle(MuscleGroupEnum.BACK));
     }
 
     public static void main(String[] args) {

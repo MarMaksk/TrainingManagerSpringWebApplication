@@ -34,6 +34,11 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
         return mapper.toDTO(measurement);
     }
 
+    public BodyMeasurementDTO createFromDTO(BodyMeasurementDTO dto) {
+        BodyMeasurement entity = mapper.toEntity(dto);
+        return mapper.toDTO(repository.save(entity));
+    }
+
     @Override
     public BodyMeasurementDTO create(BodyMeasurement entity) {
         return mapper.toDTO(repository.save(entity));

@@ -19,7 +19,7 @@ import training_manager.demo.service.entity_service.TrainingDayService;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-public class HomepageController {
+public class TrainingController {
 
     private final TrainingDayService trainingDayService;
 
@@ -30,12 +30,16 @@ public class HomepageController {
 
     @PostMapping({"/change_training"})
     public TrainingDayDTO changeTraining(@RequestBody TrainingDayDTO training) {
-        return this.trainingDayService.update(training);
+        return trainingDayService.update(training);
     }
 
     @PostMapping({"/add_training"})
     public void addTraining(@RequestBody TrainingDayDTO training) {
-        System.out.println(training);
         this.trainingDayService.createFromDTO(training);
+    }
+
+    @PostMapping({"/del_training"})
+    public void deleteTraining(@RequestBody TrainingDayDTO training) {
+        this.trainingDayService.delete(training.getId());
     }
 }

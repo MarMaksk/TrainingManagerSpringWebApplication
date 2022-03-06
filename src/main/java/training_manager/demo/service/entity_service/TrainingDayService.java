@@ -15,6 +15,7 @@ import training_manager.demo.service.mapper.TrainingDayDTOMapper;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     public void createFromDTO(TrainingDayDTO dto) {
         TrainingDay entity = mapper.toEntity(dto);
         entity.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
-        entity.setMuscle(muscleRepository.findByMuscle(dto.getMuscleGroup()).orElseThrow());
+        entity.setMuscle(muscleRepository.findByMuscleGroup(dto.getMuscleGroup()).orElseThrow());
         repository.save(entity);
     }
 
@@ -67,14 +68,15 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
                 .findByUserIdAndDayAndMuscleGroup(dto.getUserId(), dto.getDay(), dto.getMuscleGroup())
                 .orElseGet(TrainingDay::new);
         nullTrackingMapper.toEntity(trainingDay, dto);
-        trainingDay.setUser(userRepository.findById(dto.getUserId()).orElseThrow(NoSuchUserException::new));
-        nullTrackingMapper.toEntity(trainingDay, dto);
+//        trainingDay.setUser(userRepository.findById(dto.getUserId()).orElseThrow(NoSuchUserException::new));
+//        trainingDay.setMuscle(muscleRepository.findByMuscle(dto.getMuscleGroup()).orElseThrow());
         return mapper.toDTO(repository.save(trainingDay));
     }
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        Optional<TrainingDay> day = repository.findById(id);
+        repository.delete(day.get());
     }
 }
 

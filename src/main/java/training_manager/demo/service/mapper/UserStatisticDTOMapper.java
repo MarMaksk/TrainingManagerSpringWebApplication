@@ -17,7 +17,7 @@ public class UserStatisticDTOMapper implements EntityToDTOMapper<UserStatisticDT
     public UserStatisticDTO toDTO(UserStatistic entity, Object... args) {
         UserStatisticDTO dto = modelMapper.map(entity, UserStatisticDTO.class);
         if (entity.getMuscle() != null)
-            dto.setMuscleGroup(entity.getMuscle().getMuscle());
+            dto.setMuscleGroup(entity.getMuscle().getMuscleGroup());
         if (entity.getUser() != null)
             dto.setUserId(entity.getUser().getId());
         return dto;
