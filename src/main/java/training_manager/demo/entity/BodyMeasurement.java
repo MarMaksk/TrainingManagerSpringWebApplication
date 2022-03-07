@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BodyMeasurement extends AbstractEntity {
 
+    @Column(unique = true)
     private LocalDate date;
 
     @Column

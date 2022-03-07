@@ -20,11 +20,10 @@ public interface TrainingDayRepository extends JpaRepository<TrainingDay, Long> 
     @Query("from TrainingDay td " +
             "join td.muscle m " +
             "join td.user u " +
-            "where u.id = :userId and td.day = :day and m.muscleGroup = :muscleGroup")
-    Optional<TrainingDay> findByUserIdAndDayAndMuscleGroup(@Param("userId") Long userId,
+            "where u.id = :userId and td.day = :day and m.muscleGroup = :muscleGroup and td.id = :id")
+    Optional<TrainingDay> findByUserIdAndDayAndMuscleGroup(@Param("id") Long id,
+                                                           @Param("userId") Long userId,
                                                            @Param("day") int day,
                                                            @Param("muscleGroup") MuscleGroupEnum muscleGroup);
-
-   // Optional<TrainingDay> findByUserIdAndDayAndMuscleMuscleGroup(Long id, int day, MuscleGroupEnum muscle);
 
 }

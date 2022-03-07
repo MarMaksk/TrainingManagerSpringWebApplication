@@ -1,6 +1,7 @@
 package training_manager.demo.service.entity_service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.BodyMeasurementDTO;
 import training_manager.demo.entity.BodyMeasurement;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyMeasurementDTO> {
@@ -36,6 +38,18 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
 
     public BodyMeasurementDTO createFromDTO(BodyMeasurementDTO dto) {
         BodyMeasurement entity = mapper.toEntity(dto);
+        try {
+            BodyMeasurement oldBody = repository.
+                    findFirstByUserIdOrderByDateDesc(dto.getUserId()).orElseThrow(NoSuchBodyMeasurementException::new);
+            entity.setCalves(entity.getCalves() == 0 ? oldBody.getCalves() : entity.getCalves());
+            entity.setChest(entity.getChest() == 0 ? oldBody.getChest() : entity.getChest());
+            entity.setHips(entity.getHips() == 0 ? oldBody.getHips() : entity.getHips());
+            entity.setShoulder(entity.getShoulder() == 0 ? oldBody.getShoulder() : entity.getShoulder());
+            entity.setThigh(entity.getThigh() == 0 ? oldBody.getThigh() : entity.getThigh());
+            entity.setWaist(entity.getWaist() == 0 ? oldBody.getWaist() : entity.getWaist());
+        } catch (NoSuchBodyMeasurementException ex) {
+            log.warn(ex.getLocalizedMessage());
+        }
         return mapper.toDTO(repository.save(entity));
     }
 

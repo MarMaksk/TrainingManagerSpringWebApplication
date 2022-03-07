@@ -44,12 +44,8 @@ const showData = () => {
                 <td class="button-td${training.id}"></td>
                 <td class="buttondel-td${training.id}"></td>
                 `
-                trainingTr.id = `${training.id}`
-                trainingTr.classList.add('training-element')
                 buttonChange.innerText = "Изменить"
-                //buttonChange.id = `${identification}button`
                 buttonDelete.innerText = "Удалить"
-                //document.querySelector('.show-table').classList.remove("hidden")
                 document.querySelector('.show-table').append(trainingTr)
                 document.querySelector(`.button-td${training.id}`).append(buttonChange)
                 document.querySelector(`.buttondel-td${training.id}`).append(buttonDelete)
@@ -99,16 +95,12 @@ const acceptChanges = training => {
 }
 
 document.querySelector(".add-training").onclick = () => {
-    try {
-        document.querySelector('.show-table').remove()
-    } catch (e) {
-    }
+    general.deleteGrab()
     let div = document.createElement('div')
     let innerDay = document.createElement('input')
     let innerDescription = document.createElement('input')
     let innerMuscle = document.createElement('input')
     let button = document.createElement('button')
-    let br = document.createElement('br')
     innerDay.classList.add(`day${general.userId}`)
     innerDay.type = "number"
     innerDescription.classList.add(`descrip${general.userId}`)
@@ -117,7 +109,7 @@ document.querySelector(".add-training").onclick = () => {
     button.innerText = "Добавить"
     div.append(innerDay)
     div.append(innerDescription)
-    div.append(br)
+    div.append(document.createElement('br'))
     div.classList.add("div-add-training")
     fetch(muscleGroup)
         .then((response) => {
@@ -135,17 +127,18 @@ document.querySelector(".add-training").onclick = () => {
                 label.innerHTML = "<sp>" + el + "<sp>"
                 div.append(input)
                 div.append(label)
+                div.append(document.createElement('br'))
             })
         });
-    div.append(br)
+    div.append(document.createElement('br'))
     div.append(button)
     document.querySelector(`.show-info`).append(div)
     button.onclick = () => addTraining()
 }
 const addTraining = () => {
     let radioButtons = document.getElementsByName('muscleGroup')
-    let inputDay = document.querySelector(`.day${id}`)
-    let inputDescrip = document.querySelector(`.descrip${id}`)
+    let inputDay = document.querySelector(`.day${general.userId}`)
+    let inputDescrip = document.querySelector(`.descrip${general.userId}`)
     let choise
     for (let i = 0; i < radioButtons.length; i++) {
         if (radioButtons[i].checked) {

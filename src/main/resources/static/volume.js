@@ -3,116 +3,64 @@ import * as general from './general.js'
 let showBodyMeasurement = "/show_body_measurement"
 let updateBodyMeasurement = "/change_body_measurement"
 let createBodyMeasurement = "/add_body_measurement"
-let delBodyMeasurement = "/add_body_measurement"
+let delBodyMeasurement = "/del_body_measurement"
 
 document.querySelector(".show-volume").onclick = () => {
     showVolume()
 }
 
 const showVolume = () => {
-    try {
-        document.querySelector('.show-table').remove()
-    } catch (e) {
-    }
-    try {
-        document.querySelector(".div-add-training").remove()
-    } catch (e) {
-    }
+    general.deleteGrab()
     general.postData(showBodyMeasurement, general.userId)
         .then((data) => {
             let table = document.createElement('table')
             table.innerHTML = `
         <tr>
-            <th>День</th>
-            <th>Группа мышц</th>
-            <th>Описание упражнения</th>
-            <th>Подходы в последний раз</th>
-            <th>Повторения в последний раз</th>
-            <th>Вес в последний раз</th>
-            <th>Дата последнего выполения</th>
+            <th>Грудь</th>
+            <th>Талия</th>
+            <th>Бёдра</th>
+            <th>Плечи</th>
+            <th>Бицепс</th>
+            <th>Икры</th>
         </tr>
             `
             table.classList.add('show-table')
             document.querySelector('.show-info').append(table)
-            data.forEach(training => {
-                identification++
-                let trainingTr = document.createElement('tr');
+            data.forEach(volume => {
+                let volumeTr = document.createElement('tr');
                 let buttonChange = document.createElement('button')
                 let buttonDelete = document.createElement('button')
-                trainingTr.classList.add(`tr-table${training.id}`)
-                trainingTr.innerHTML = `
-                <td id="day${training.id}">${training.day}</td>
-                <td>${training.muscleGroup}</td>
-                <td id="descrip${training.id}">${training.descriptionExercises}</td>
-                <td>${training.lastApproaches}</td>
-                <td>${training.lastRepeats}</td>
-                <td>${training.lastWeight}</td>
-                <td>${training.lastDate}</td>
-                <td class="button-td${training.id}"></td>
-                <td class="buttondel-td${training.id}"></td>
+                volumeTr.classList.add(`tr-table${volume.id}`)
+                volumeTr.innerHTML = `
+                <td id="chest${general.userId}">${volume.chest}</td>
+                <td id="waist${general.userId}">${volume.waist}</td>
+                <td id="hips${general.userId}">${volume.hips}</td>
+                <td id="shoulder${general.userId}">${volume.shoulder}</td>
+                <td id="thigh${general.userId}">${volume.thigh}</td>
+                <td id="calves${general.userId}">${volume.calves}</td>
+                <td class="button-td${volume.id}"></td>
+                <td class="buttondel-td${volume.id}"></td>
                 `
-                trainingTr.id = `${training.id}`
-                trainingTr.classList.add('training-element')
                 buttonChange.innerText = "Изменить"
-                //buttonChange.id = `${identification}button`
                 buttonDelete.innerText = "Удалить"
-                //document.querySelector('.show-table').classList.remove("hidden")
-                document.querySelector('.show-table').append(trainingTr)
-                document.querySelector(`.button-td${training.id}`).append(buttonChange)
-                document.querySelector(`.buttondel-td${training.id}`).append(buttonDelete)
-                buttonChange.onclick = () => changeVolume(training)
-                buttonDelete.onclick = () => deleteVolume(training)
+                document.querySelector('.show-table').append(volumeTr)
+                document.querySelector(`.button-td${volume.id}`).append(buttonChange)
+                document.querySelector(`.buttondel-td${volume.id}`).append(buttonDelete)
+                buttonChange.onclick = () => changeVolume(volume)
+                buttonDelete.onclick = () => deleteVolume(volume)
             })
         })
 }
 
-const deleteVolume = training => {
-    general.postData(delBodyMeasurement, training)
-    document.querySelector(`.tr-table${training.id}`).remove()
+const deleteVolume = volume => {
+    general.postData(delBodyMeasurement, volume.id)
+    document.querySelector(`.tr-table${volume.id}`).remove()
 }
 
-const changeVolume = training => {
-    document.querySelector('.show-table').remove()
-    let innerDay = document.createElement('input')
-    let innerDescription = document.createElement('input')
-    let button = document.createElement('button')
-    button.classList.add('changeButton')
-    innerDay.value = training.day
-    innerDay.type = "number"
-    innerDay.classList.add("innerDay" + `${training.id}`)
-    innerDescription.value = training.descriptionExercises
-    innerDescription.classList.add("innerDescription" + `${training.id}`)
-    document.querySelector(`.show-info`).append(innerDay)
-    document.querySelector(`.show-info`).append(innerDescription)
-    document.querySelector(`.show-info`).append(button)
-    let cont = document.querySelector(`.show-info`)
-    cont.append(innerDay)
-    cont.append(innerDescription)
-    cont.append(button)
-    button.innerText = "Подтвердить"
-    button.onclick = () => acceptChanges(training)
-}
-
-const acceptChangeVolume = training => {
-    showData()
-    let innerDay = document.querySelector(".innerDay" + `${training.id}`)
-    let innerDesc = document.querySelector(".innerDescription" + `${training.id}`);
-    training.day = innerDay.value
-    training.descriptionExercises = innerDesc.value
-    innerDay.remove()
-    innerDesc.remove()
-    document.querySelector('.changeButton').remove()
-    general.postData(updateTraining, training)
-}
-
-document.querySelector(".add-volume").onclick = () => {
-    console.log(general.userId)
-    try {
-        document.querySelector('.show-table').remove()
-    } catch (e) {
-    }
+const changeVolume = volume => {
+    general.deleteGrab()
     let div = document.createElement('div')
-    let label = document.createElement('label')
+    div.classList.add('div-add-volume')
     let chest = document.createElement('input')
     let waist = document.createElement('input')
     let hips = document.createElement('input')
@@ -132,37 +80,110 @@ document.querySelector(".add-volume").onclick = () => {
     shoulder.type = "number"
     thigh.type = "number"
     calves.type = "number"
-    button.classList.add(`button-add-body`)
+    button.innerText = "Добавить"
+    chest.value = `${volume.chest}`
+    waist.value = `${volume.waist}`
+    hips.value = `${volume.hips}`
+    shoulder.value = `${volume.shoulder}`
+    thigh.value = `${volume.thigh}`
+    calves.value = `${volume.calves}`
+    div.append(document.createElement('label').innerHTML = 'Замеры груди: ',
+        chest, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры талии: ',
+        waist, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры бёдер: ',
+        hips, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры плеч: ',
+        shoulder, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры бицепса: ',
+        thigh, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры икр: ',
+        calves, document.createElement('br'),
+        document.createElement('br'))
+    div.append(button)
+    document.querySelector(`.show-info`).append(div)
+    button.onclick = () => acceptChangeVolume(volume)
+}
+
+const acceptChangeVolume = volume => {
+    volume.chest = document.querySelector(`.chest${general.userId}`).value
+    volume.waist = document.querySelector(`.waist${general.userId}`).value
+    volume.hips = document.querySelector(`.hips${general.userId}`).value
+    volume.shoulder = document.querySelector(`.shoulder${general.userId}`).value
+    volume.thigh = document.querySelector(`.thigh${general.userId}`).value
+    volume.calves = document.querySelector(`.calves${general.userId}`).value
+    general.postData(updateBodyMeasurement, volume)
+    document.querySelector(".div-add-volume").remove()
+}
+
+document.querySelector(".add-volume").onclick = () => {
+    general.deleteGrab()
+    let div = document.createElement('div')
+    div.classList.add('div-add-volume')
+    let chest = document.createElement('input')
+    let waist = document.createElement('input')
+    let hips = document.createElement('input')
+    let shoulder = document.createElement('input')
+    let thigh = document.createElement('input')
+    let calves = document.createElement('input')
+    let button = document.createElement('button')
+    chest.classList.add(`chest${general.userId}`)
+    waist.classList.add(`waist${general.userId}`)
+    hips.classList.add(`hips${general.userId}`)
+    shoulder.classList.add(`shoulder${general.userId}`)
+    thigh.classList.add(`thigh${general.userId}`)
+    calves.classList.add(`calves${general.userId}`)
+    chest.type = "number"
+    waist.type = "number"
+    hips.type = "number"
+    shoulder.type = "number"
+    thigh.type = "number"
+    calves.type = "number"
     button.innerText = "Добавить"
     div.append(document.createElement('label').innerHTML = 'Замеры груди: ',
         chest, document.createElement('br'),
         document.createElement('br'))
-    div.append(document.createElement('label').innerHTML = 'Замеры талии: ')
-    div.append(waist)
-    div.append(document.createElement('br'))
-    div.classList.add("div-add-volume")
-    div.append(document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры талии: ',
+        waist, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры бёдер: ',
+        hips, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры плеч: ',
+        shoulder, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры бицепса: ',
+        thigh, document.createElement('br'),
+        document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Замеры икр: ',
+        calves, document.createElement('br'),
+        document.createElement('br'))
     div.append(button)
     document.querySelector(`.show-info`).append(div)
     button.onclick = () => addVolume()
 }
 
 const addVolume = () => {
-    let radioButtons = document.getElementsByName('muscleGroup')
-    let inputDay = document.querySelector(`.day${general.userId}`)
-    let inputDescrip = document.querySelector(`.descrip${general.userId}`)
-    let choise
-    for (let i = 0; i < radioButtons.length; i++) {
-        if (radioButtons[i].checked) {
-            choise = radioButtons[i]
-        }
+    let chest = document.querySelector(`.chest${general.userId}`).value
+    let waist = document.querySelector(`.waist${general.userId}`).value
+    let hips = document.querySelector(`.hips${general.userId}`).value
+    let shoulder = document.querySelector(`.shoulder${general.userId}`).value
+    let thigh = document.querySelector(`.thigh${general.userId}`).value
+    let calves = document.querySelector(`.calves${general.userId}`).value
+    let bodyMeasurement = {
+        chest: chest,
+        waist: waist,
+        hips: hips,
+        shoulder: shoulder,
+        thigh: thigh,
+        calves: calves,
+        userId: general.userId
     }
-    let training = {
-        day: inputDay.value,
-        muscleGroup: choise.value,
-        descriptionExercises: inputDescrip.value,
-        userId: id
-    }
-    postData(createTraining, training)
-    document.querySelector(".div-add-training").remove()
+    general.postData(createBodyMeasurement, bodyMeasurement)
+    document.querySelector(".div-add-volume").remove()
 }

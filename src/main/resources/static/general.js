@@ -28,4 +28,8 @@ export function deleteGrab(){
         document.querySelector(".div-add-training").remove()
     } catch (e) {
     }
+    try {
+        document.querySelector(".div-add-volume").remove()
+    } catch (e) {
+    }
 }

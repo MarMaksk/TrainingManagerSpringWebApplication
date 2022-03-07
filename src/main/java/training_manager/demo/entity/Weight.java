@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Weight extends AbstractEntity {
 
+    @Column(unique = true)
     private LocalDate date;
 
     @Column(nullable = false)

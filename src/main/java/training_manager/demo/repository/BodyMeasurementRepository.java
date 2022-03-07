@@ -1,6 +1,8 @@
 package training_manager.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import training_manager.demo.entity.BodyMeasurement;
 
@@ -14,4 +16,6 @@ public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement
     List<BodyMeasurement> findAllByUserId(Long id);
 
     Optional<BodyMeasurement> findByUserIdAndDate(Long id, LocalDate date);
+
+    Optional<BodyMeasurement> findFirstByUserIdOrderByDateDesc(@Param("id") Long id);
 }

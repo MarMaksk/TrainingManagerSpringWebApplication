@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Table(name = "users_statistic")
 public class UserStatistic extends AbstractEntity {
 
+    @Column(unique = true)
     private LocalDate date;
 
     private int weight;
