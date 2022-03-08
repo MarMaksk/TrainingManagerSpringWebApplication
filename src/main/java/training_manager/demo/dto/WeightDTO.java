@@ -16,7 +16,7 @@ public class WeightDTO {
 
     private Long id;
 
-    private LocalDate localDate;
+    private LocalDate date;
 
     private int weight;
 
@@ -24,8 +24,8 @@ public class WeightDTO {
 
     @PrePersist
     public void prePersist() {
-        if (localDate == null) {
-            localDate = LocalDate.now();
+        if (date == null) {
+            date = LocalDate.now();
         }
     }
 

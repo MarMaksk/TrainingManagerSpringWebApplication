@@ -22,6 +22,7 @@ const showVolume = () => {
             <th>Плечи</th>
             <th>Бицепс</th>
             <th>Икры</th>
+            <th>Дата замеров</th>
         </tr>
             `
             table.classList.add('show-table')
@@ -38,6 +39,7 @@ const showVolume = () => {
                 <td id="shoulder${general.userId}">${volume.shoulder}</td>
                 <td id="thigh${general.userId}">${volume.thigh}</td>
                 <td id="calves${general.userId}">${volume.calves}</td>
+                <td>${volume.date}</td>
                 <td class="button-td${volume.id}"></td>
                 <td class="buttondel-td${volume.id}"></td>
                 `
@@ -60,7 +62,7 @@ const deleteVolume = volume => {
 const changeVolume = volume => {
     general.deleteGrab()
     let div = document.createElement('div')
-    div.classList.add('div-add-volume')
+    div.classList.add('div-add')
     let chest = document.createElement('input')
     let waist = document.createElement('input')
     let hips = document.createElement('input')
@@ -118,13 +120,13 @@ const acceptChangeVolume = volume => {
     volume.thigh = document.querySelector(`.thigh${general.userId}`).value
     volume.calves = document.querySelector(`.calves${general.userId}`).value
     general.postData(updateBodyMeasurement, volume)
-    document.querySelector(".div-add-volume").remove()
+    document.querySelector(".div-add").remove()
 }
 
 document.querySelector(".add-volume").onclick = () => {
     general.deleteGrab()
     let div = document.createElement('div')
-    div.classList.add('div-add-volume')
+    div.classList.add('div-add')
     let chest = document.createElement('input')
     let waist = document.createElement('input')
     let hips = document.createElement('input')
@@ -185,5 +187,5 @@ const addVolume = () => {
         userId: general.userId
     }
     general.postData(createBodyMeasurement, bodyMeasurement)
-    document.querySelector(".div-add-volume").remove()
+    document.querySelector(".div-add").remove()
 }

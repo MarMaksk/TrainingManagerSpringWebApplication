@@ -6,13 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.entity.TrainingDay;
+import training_manager.demo.repository.MuscleRepository;
+import training_manager.demo.repository.UserRepository;
 
 @Data
 @Component
 public class TrainingDayDTOMapper implements EntityToDTOMapper<TrainingDayDTO, TrainingDay> {
     @Autowired
-    private ModelMapper modelMapper;
-
+    private final ModelMapper modelMapper;
+    @Autowired
+    private final UserRepository userRepository;
+    @Autowired
+    private final MuscleRepository muscleRepository;
     @Override
     public TrainingDayDTO toDTO(TrainingDay entity, Object... args) {
         TrainingDayDTO dto = modelMapper.map(entity, TrainingDayDTO.class);
@@ -23,6 +28,9 @@ public class TrainingDayDTOMapper implements EntityToDTOMapper<TrainingDayDTO, T
 
     @Override
     public TrainingDay toEntity(TrainingDayDTO dto, Object... args) {
-        return modelMapper.map(dto, TrainingDay.class);
+        TrainingDay entity = modelMapper.map(dto, TrainingDay.class);
+        entity.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
+        entity.setMuscle(muscleRepository.findByMuscleGroup(dto.getMuscleGroup()).orElseThrow());
+        return entity;
     }
 }

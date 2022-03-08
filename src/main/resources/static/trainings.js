@@ -62,9 +62,11 @@ const deleteTraining = training => {
 
 const changeTraining = training => {
     document.querySelector('.show-table').remove()
+    let div = document.createElement('div')
     let innerDay = document.createElement('input')
     let innerDescription = document.createElement('input')
     let button = document.createElement('button')
+    div.classList.add('div-add')
     button.classList.add('changeButton')
     innerDay.value = training.day
     innerDay.type = "number"
@@ -74,10 +76,10 @@ const changeTraining = training => {
     document.querySelector(`.show-info`).append(innerDay)
     document.querySelector(`.show-info`).append(innerDescription)
     document.querySelector(`.show-info`).append(button)
-    let cont = document.querySelector(`.show-info`)
-    cont.append(innerDay)
-    cont.append(innerDescription)
-    cont.append(button)
+    div.append(innerDay)
+    div.append(innerDescription)
+    div.append(button)
+    document.querySelector(`.show-info`).append(div)
     button.innerText = "Подтвердить"
     button.onclick = () => acceptChanges(training)
 }
@@ -88,10 +90,8 @@ const acceptChanges = training => {
     let innerDesc = document.querySelector(".innerDescription" + `${training.id}`);
     training.day = innerDay.value
     training.descriptionExercises = innerDesc.value
-    innerDay.remove()
-    innerDesc.remove()
-    document.querySelector('.changeButton').remove()
     general.postData(updateTraining, training)
+    general.deleteGrab()
 }
 
 document.querySelector(".add-training").onclick = () => {
@@ -110,7 +110,7 @@ document.querySelector(".add-training").onclick = () => {
     div.append(innerDay)
     div.append(innerDescription)
     div.append(document.createElement('br'))
-    div.classList.add("div-add-training")
+    div.classList.add("div-add")
     fetch(muscleGroup)
         .then((response) => {
             return response.json()
@@ -152,5 +152,5 @@ const addTraining = () => {
         userId: general.userId
     }
     general.postData(createTraining, training)
-    document.querySelector(".div-add-training").remove()
+    document.querySelector(".div-add").remove()
 }

@@ -41,6 +41,11 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
         return mapper.toDTO(weight);
     }
 
+    public WeightDTO createFromDTO(WeightDTO dto) {
+        Weight entity = mapper.toEntity(dto);
+        return mapper.toDTO(repository.save(entity));
+    }
+
     @Override
     public WeightDTO create(Weight entity) {
         return mapper.toDTO(repository.save(entity));
@@ -48,7 +53,7 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
 
     @Override
     public WeightDTO update(WeightDTO dto) {
-        Weight weight = repository.findByUserIdAndDate(dto.getUserId(), dto.getLocalDate()).orElseGet(Weight::new);
+        Weight weight = repository.findByUserIdAndDate(dto.getUserId(), dto.getDate()).orElseGet(Weight::new);
         nullTrackingMapper.toEntity(weight, dto);
         return mapper.toDTO(repository.save(weight));
     }

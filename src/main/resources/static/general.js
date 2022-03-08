@@ -25,11 +25,7 @@ export function deleteGrab(){
     } catch (e) {
     }
     try {
-        document.querySelector(".div-add-training").remove()
-    } catch (e) {
-    }
-    try {
-        document.querySelector(".div-add-volume").remove()
+        document.querySelector(".div-add").remove()
     } catch (e) {
     }
 }

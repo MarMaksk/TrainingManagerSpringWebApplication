@@ -18,7 +18,7 @@ public class Weight extends AbstractEntity {
     private LocalDate date;
 
     @Column(nullable = false)
-    private int weight;
+    private double weight;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

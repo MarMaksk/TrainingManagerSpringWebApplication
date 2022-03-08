@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.WeightDTO;
 import training_manager.demo.entity.Weight;
+import training_manager.demo.repository.UserRepository;
 
 @Component
 @Data
 public class WeightDTOMapper implements EntityToDTOMapper<WeightDTO, Weight> {
     @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    @Autowired
+    private final UserRepository userRepository;
 
     @Override
     public WeightDTO toDTO(Weight entity, Object... args) {
@@ -23,6 +26,8 @@ public class WeightDTOMapper implements EntityToDTOMapper<WeightDTO, Weight> {
 
     @Override
     public Weight toEntity(WeightDTO dto, Object... args) {
-        return modelMapper.map(dto, Weight.class);
+        Weight weight = modelMapper.map(dto, Weight.class);
+        weight.setUser(userRepository.getById(dto.getUserId()));
+        return weight;
     }
 }
