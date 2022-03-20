@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import training_manager.demo.enums.MuscleGroupEnum;
 
-import javax.persistence.PrePersist;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -17,10 +18,13 @@ public class TrainingDayDTO {
 
     private Long id;
 
+    @NotNull
     private int day;
 
+    @NotNull
     private MuscleGroupEnum muscleGroup;
 
+    @NotBlank
     private String descriptionExercises;
 
     /**
@@ -43,10 +47,4 @@ public class TrainingDayDTO {
 
     private Long userId;
 
-    @PrePersist
-    public void prePersist() {
-        if (lastDate == null) {
-            lastDate = LocalDate.now();
-        }
-    }
 }

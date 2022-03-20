@@ -1,4 +1,4 @@
-package training_manager.demo.service.entity_service;
+package training_manager.demo.service.entity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,13 +39,9 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     }
 
     @Transactional
-    public TrainingDayDTO findByUserAndDayAndMuscleGroup(Long id, Long userId, int day, MuscleGroupEnum muscleGroup) {
-        TrainingDay trainingDay = repository.findByUserIdAndDayAndMuscleGroup(id, userId, day, muscleGroup)
-                .orElseThrow(() -> new NoSuchTrainingDayException(
-                        String.format("No such training day with user id %d and day %d and muscle group name %s",
-                                userId, day, muscleGroup.name())
-                ));
-        return mapper.toDTO(trainingDay);
+    public List<TrainingDayDTO> findByUserAndDayAndMuscleGroup(Long userId, int day, MuscleGroupEnum muscleGroup) {
+        List<TrainingDay> trainingDay = repository.findByUserIdAndDayAndMuscleGroup(userId, day, muscleGroup);
+        return mapper.toDTOs(trainingDay);
     }
 
     public void createFromDTO(TrainingDayDTO dto) {
@@ -63,7 +59,7 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     @Override
     public TrainingDayDTO update(TrainingDayDTO dto) {
         TrainingDay trainingDay = repository
-                .findByUserIdAndDayAndMuscleGroup(dto.getId(), dto.getUserId(), dto.getDay(), dto.getMuscleGroup())
+                .findByIdUserIdAndDayAndMuscleGroup(dto.getId(), dto.getUserId(), dto.getDay(), dto.getMuscleGroup())
                 .orElseGet(TrainingDay::new);
         nullTrackingMapper.toEntity(trainingDay, dto);
         return mapper.toDTO(repository.save(trainingDay));

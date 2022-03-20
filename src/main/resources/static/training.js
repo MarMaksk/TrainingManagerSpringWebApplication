@@ -1,6 +1,7 @@
 import * as general from './general.js'
 
 let showTrainings = "/show_training"
+let startTrainings = "/start_training"
 let updateTraining = "/change_training"
 let muscleGroup = "/muscle_group"
 let createTraining = "/add_training"
@@ -94,24 +95,26 @@ const acceptChanges = training => {
     general.deleteGrab()
 }
 
-document.querySelector(".add-training").onclick = () => {
+document.querySelector(".add-training").onclick = async () => {
     general.deleteGrab()
     let div = document.createElement('div')
     let innerDay = document.createElement('input')
     let innerDescription = document.createElement('input')
-    let innerMuscle = document.createElement('input')
     let button = document.createElement('button')
     innerDay.classList.add(`day${general.userId}`)
     innerDay.type = "number"
     innerDescription.classList.add(`descrip${general.userId}`)
-    innerMuscle.classList.add(`muscle${general.userId}`)
-    button.classList.add(`button`)
     button.innerText = "Добавить"
+    div.append(document.createElement('label').innerText = "Номер тренировочного дня: ")
     div.append(innerDay)
+    div.append(document.createElement('br'))
+    div.append(document.createElement('label').innerText = "Описание тренировки: ")
     div.append(innerDescription)
     div.append(document.createElement('br'))
     div.classList.add("div-add")
-    fetch(muscleGroup)
+    div.append(document.createElement('label').innerText = "Группа мышц: ")
+    div.append(document.createElement('br'))
+    await fetch(muscleGroup)
         .then((response) => {
             return response.json()
         })
@@ -119,8 +122,6 @@ document.querySelector(".add-training").onclick = () => {
             data.forEach(el => {
                 let input = document.createElement('input')
                 let label = document.createElement('label')
-                input.classList.add(`add${general.userId}`)
-                label.classList.add(`add${general.userId}`)
                 input.name = "muscleGroup"
                 input.type = "radio"
                 input.value = el
@@ -130,7 +131,6 @@ document.querySelector(".add-training").onclick = () => {
                 div.append(document.createElement('br'))
             })
         });
-    div.append(document.createElement('br'))
     div.append(button)
     document.querySelector(`.show-info`).append(div)
     button.onclick = () => addTraining()
@@ -153,4 +153,96 @@ const addTraining = () => {
     }
     general.postData(createTraining, training)
     document.querySelector(".div-add").remove()
+}
+
+document.querySelector(".start-training").onclick = async () => {
+    general.deleteGrab()
+    let div = document.createElement('div')
+    let innerDay = document.createElement('input')
+    let button = document.createElement('button')
+    innerDay.type = "number"
+    button.innerText = "Начать"
+    innerDay.classList.add(`day${general.userId}`)
+    div.append(innerDay)
+    div.append(document.createElement('label').innerHTML = ' номер дня тренировки')
+    div.append(document.createElement('br'))
+    div.classList.add('div-add')
+    div.append(document.createElement('label').innerHTML = 'Группа мышц:')
+    div.append(document.createElement('br'))
+    await fetch(muscleGroup)
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            data.forEach(el => {
+                let input = document.createElement('input')
+                let label = document.createElement('label')
+                input.name = "muscleGroup"
+                input.type = "radio"
+                input.value = el
+                label.innerHTML = "<sp>" + el + "<sp>"
+                div.append(input)
+                div.append(label)
+                div.append(document.createElement('br'))
+            })
+        });
+    div.append(button)
+    document.querySelector(`.show-info`).append(div)
+    button.onclick = () => startTraining()
+}
+
+const startTraining = () => {
+    let day = document.querySelector(`.day${general.userId}`)
+    let radioButtons = document.getElementsByName('muscleGroup')
+    let choise
+    for (let i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+            choise = radioButtons[i]
+        }
+    }
+    let training = {
+        day: day.value,
+        muscleGroup: choise.value,
+        userId: general.userId
+    }
+    general.deleteGrab()
+    general.postData(startTrainings, training)
+        .then((data) => {
+            let table = document.createElement('table')
+            table.innerHTML = `
+        <tr>
+            <th>Описание упражнения</th>
+            <th>Подходы в последний раз</th>
+            <th>Повторения в последний раз</th>
+            <th>Вес в последний раз</th>
+            <th>Дата последнего выполения</th>
+        </tr>
+            `
+            table.classList.add('show-table')
+            document.querySelector('.show-info').append(table)
+            data.forEach(training => {
+                let trainingTr = document.createElement('tr');
+                let button = document.createElement('button')
+                trainingTr.classList.add(`tr-table${training.id}`)
+                trainingTr.innerHTML = `
+                <td id="descrip${training.id}">${training.descriptionExercises}</td>
+                <td>${training.lastApproaches}</td>
+                <td>${training.lastRepeats}</td>
+                <td>${training.lastWeight}</td>
+                <td>${training.lastDate}</td>
+                <td class="button-td${training.id}"></td>
+                `
+                button.innerText = "Начать выполнение"
+                document.querySelector('.show-table').append(trainingTr)
+                document.querySelector(`.button-td${training.id}`).append(button)
+                button.onclick = () => beginExercise(training)
+            })
+        })
+}
+
+const beginExercise = training => {
+    let approaches = document.createElement('input')
+    let repeats = document.createElement('input')
+    let weight = document.createElement('input')
+
 }

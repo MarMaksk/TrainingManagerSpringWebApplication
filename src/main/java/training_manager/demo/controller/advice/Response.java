@@ -1,4 +1,4 @@
-package training_manager.demo.advice;
+package training_manager.demo.controller.advice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

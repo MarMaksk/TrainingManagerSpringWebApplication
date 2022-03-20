@@ -6,12 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import training_manager.demo.enums.MuscleGroupEnum;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MuscleDTO {
 
+    @NotNull
     private MuscleGroupEnum muscleGroup;
 
 }

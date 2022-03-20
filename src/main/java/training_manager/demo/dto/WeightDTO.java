@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.PrePersist;
+import javax.validation.constraints.Max;
 import java.time.LocalDate;
 
 @Data
@@ -18,15 +18,9 @@ public class WeightDTO {
 
     private LocalDate date;
 
+    @Max(500)
     private int weight;
 
     private Long userId;
-
-    @PrePersist
-    public void prePersist() {
-        if (date == null) {
-            date = LocalDate.now();
-        }
-    }
 
 }

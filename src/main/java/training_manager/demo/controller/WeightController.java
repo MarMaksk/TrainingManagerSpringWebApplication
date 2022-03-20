@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import training_manager.demo.dto.WeightDTO;
-import training_manager.demo.service.entity_service.WeightService;
+import training_manager.demo.service.entity.WeightService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class WeightController {
     private final WeightService weightService;
 
     @PostMapping("/add_weight")
-    public void addWeight(@RequestBody WeightDTO dto) {
+    public void addWeight(@RequestBody @Valid WeightDTO dto) {
         weightService.createFromDTO(dto);
     }
 
@@ -32,7 +33,7 @@ public class WeightController {
     }
 
     @PostMapping("/change_weight")
-    public void changeWeight(@RequestBody WeightDTO dto) {
+    public void changeWeight(@RequestBody @Valid WeightDTO dto) {
         weightService.update(dto);
     }
 

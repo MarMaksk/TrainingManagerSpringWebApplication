@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.UserDTO;
 import training_manager.demo.entity.User;
-import training_manager.demo.service.entity_service.WeightService;
+import training_manager.demo.service.entity.WeightService;
 
 @Data
 @Component

@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import training_manager.demo.entity.User;
 import training_manager.demo.repository.UserRepository;
-import training_manager.demo.service.entity_service.BodyMeasurementService;
-import training_manager.demo.service.entity_service.MuscleService;
-import training_manager.demo.service.entity_service.TrainingDayService;
+import training_manager.demo.service.entity.BodyMeasurementService;
+import training_manager.demo.service.entity.MuscleService;
+import training_manager.demo.service.entity.TrainingDayService;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -29,11 +28,6 @@ public class Runner {
 
     @Autowired
     MuscleService muscleService;
-
-    // TODO хибернейт кеш второго уровня
-    // Переделать круд
-    // Добавить в сервисы смену пользователя
-
 
     @PostConstruct
     @Transactional

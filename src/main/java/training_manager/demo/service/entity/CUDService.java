@@ -1,4 +1,4 @@
-package training_manager.demo.service.entity_service;
+package training_manager.demo.service.entity;
 
 import training_manager.demo.entity.AbstractEntity;
 

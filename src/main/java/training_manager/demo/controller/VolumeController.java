@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import training_manager.demo.dto.BodyMeasurementDTO;
-import training_manager.demo.service.entity_service.BodyMeasurementService;
+import training_manager.demo.service.entity.BodyMeasurementService;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,13 +19,13 @@ public class VolumeController {
     private final BodyMeasurementService bodyMeasurementService;
 
     @PostMapping("/add_body_measurement")
-    public void addBodyMeasurement(@RequestBody BodyMeasurementDTO dto) {
+    public void addBodyMeasurement(@RequestBody @Valid BodyMeasurementDTO dto) {
         bodyMeasurementService.createFromDTO(dto);
     }
 
     @PostMapping("/show_body_measurement")
     public List<BodyMeasurementDTO> showBodyMeasurement(@RequestBody Long userId) {
-       return bodyMeasurementService.findAllByUser(userId);
+        return bodyMeasurementService.findAllByUser(userId);
     }
 
     @PostMapping("/del_body_measurement")
@@ -34,7 +34,7 @@ public class VolumeController {
     }
 
     @PostMapping("/change_body_measurement")
-    public void changeBodyMeasurement(@RequestBody BodyMeasurementDTO dto) {
+    public void changeBodyMeasurement(@RequestBody @Valid BodyMeasurementDTO dto) {
         bodyMeasurementService.update(dto);
     }
 
