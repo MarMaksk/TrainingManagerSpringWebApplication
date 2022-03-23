@@ -7,26 +7,24 @@ import lombok.NoArgsConstructor;
 import training_manager.demo.enums.MuscleGroupEnum;
 
 import javax.validation.constraints.Max;
-import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStatisticDTO {
-    private Long id;
-
-    private LocalDate date;
+public class WorkoutDTO {
 
     @Max(500)
     private int weight;
 
     private int repeats;
 
+    @Max(100)
     private int approaches;
 
     private MuscleGroupEnum muscleGroup;
 
     private Long userId;
 
+    private Long trainingId;
 }

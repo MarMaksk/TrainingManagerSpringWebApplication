@@ -1,4 +1,5 @@
 import * as general from './general.js'
+import {deleteGrab, postData} from './general.js'
 
 let showTrainings = "/show_training"
 let startTrainings = "/start_training"
@@ -6,6 +7,8 @@ let updateTraining = "/change_training"
 let muscleGroup = "/muscle_group"
 let createTraining = "/add_training"
 let delTraining = "/del_training"
+
+let workoutSave = "/workout_save"
 
 document.querySelector(".show-training").onclick = () => {
     showData()
@@ -241,8 +244,43 @@ const startTraining = () => {
 }
 
 const beginExercise = training => {
+    general.deleteGrab()
+    let div = document.createElement('div')
     let approaches = document.createElement('input')
     let repeats = document.createElement('input')
     let weight = document.createElement('input')
+    let button = document.createElement('button')
+    approaches.type = 'number'
+    approaches.classList.add('approaches')
+    repeats.type = 'number'
+    repeats.classList.add('repeats')
+    weight.type = 'number'
+    weight.classList.add('weight')
+    button.innerHTML = 'Подтвердить'
+    div.classList.add('div-add')
+    div.append(document.createElement('label').innerHTML = 'Число подходов:')
+    div.append(approaches)
+    div.append(document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Число повторений:')
+    div.append(repeats)
+    div.append(document.createElement('br'))
+    div.append(document.createElement('label').innerHTML = 'Используемый вес:')
+    div.append(weight)
+    div.append(document.createElement('br'))
+    div.append(button)
+    document.querySelector(`.show-info`).append(div)
+    button.onclick = () => pasteTraining(training)
+}
 
+const pasteTraining = training => {
+    let workout = {
+        weight: document.querySelector('.weight').value,
+        repeats: document.querySelector('.repeats').value,
+        approaches: document.querySelector('.approaches').value,
+        muscleGroup: training.muscleGroup,
+        userId: general.userId,
+        trainingId: training.id
+    }
+    deleteGrab()
+    postData(workoutSave, workout)
 }

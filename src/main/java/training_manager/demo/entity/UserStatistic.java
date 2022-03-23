@@ -1,6 +1,9 @@
 package training_manager.demo.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -8,6 +11,9 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "users_statistic")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserStatistic extends AbstractEntity {
 
     @Column(unique = true)
@@ -17,13 +23,15 @@ public class UserStatistic extends AbstractEntity {
 
     private int repeats;
 
+    private int approaches;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user = new User();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "muscle_id")
-    private Muscle muscle;
+    private Muscle muscle = new Muscle();
 
     @PrePersist
     public void prePersist() {
