@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.web.SecurityFilterChain;
 import training_manager.demo.repository.UserRepository;
 import training_manager.demo.service.entity.BodyMeasurementService;
 import training_manager.demo.service.entity.MuscleService;
