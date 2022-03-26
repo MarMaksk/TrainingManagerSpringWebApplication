@@ -1,4 +1,4 @@
-package training_manager.demo.Security;
+package training_manager.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
