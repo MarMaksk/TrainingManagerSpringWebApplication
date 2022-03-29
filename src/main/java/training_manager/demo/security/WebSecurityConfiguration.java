@@ -1,16 +1,13 @@
 package training_manager.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -20,28 +17,27 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationProviderImplementation authenticationProvider;
     private final UserDetailsServiceImplementation userService;
-    @Qualifier("passwordEncoders")
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    public WebSecurityConfiguration(AuthenticationProviderImplementation authenticationProvider, UserDetailsServiceImplementation userService, BCryptPasswordEncoder encoder) {
+    public WebSecurityConfiguration(AuthenticationProviderImplementation authenticationProvider, UserDetailsServiceImplementation userService, PasswordEncoder encoder) {
         this.authenticationProvider = authenticationProvider;
         this.userService = userService;
         this.encoder = encoder;
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-//    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
+        auth.userDetailsService(userService).passwordEncoder(encoder);
         auth.inMemoryAuthentication()
                 .passwordEncoder(encoder)
                 .withUser("user")
                 .password("$2a$10$0C3XNq8tuxvevO8jQyPvcuTF7Vdc6fx4CAc1YaecL.Kd2QiUP//FO") //user
+                .roles("user", "admin")
+                .and()
+                .withUser("admin")
+                .password("admin") //admin
                 .roles("user", "admin");
     }
 
@@ -50,41 +46,56 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().and().debug(true);
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/login")
+                .permitAll();
+//                .antMatchers("/api/**")
+//                .access("hasRole('ROLE_USER')");
+        http.formLogin()
+                .defaultSuccessUrl("/", true)
+                .loginPage("/login");
+
+
+       /* http.cors().and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated().and()
+                .formLogin()
+                .defaultSuccessUrl("/", true)
+                .loginPage("/login");*/
+
+
 //        http
 //                .authorizeRequests()
-//                .antMatchers().permitAll() // Здесь добалвяются объекты к которым открываем доступ для всех
-//                .antMatchers().hasRole(RoleEnum.ROLE_USER.name()) //Здесь тем у кого есть определнная роль
-//                .antMatchers().authenticated() //Здесь разрешить авторизированным юзерам
+//                .antMatchers("/css/**", "/js/**", "/index*", "/json/**", "/*.ico", "/images/**", "/login/**").permitAll()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/**").hasRole(RoleEnum.USER.name())
+//                .antMatchers(HttpMethod.GET, "/**").authenticated()
+//                .antMatchers(HttpMethod.GET, "/**").hasRole(RoleEnum.ADMIN.name())
+//                .antMatchers(HttpMethod.GET, "/**").authenticated()
+//                .antMatchers(HttpMethod.GET, "/**").hasRole(RoleEnum.HELPER.name())
+//                .antMatchers(HttpMethod.GET, "/**").authenticated()
 //                .and()
 //                .formLogin()
-//                .loginPage("/login") //Путь к странице логин
+//                .loginPage("/login")
 //                .loginProcessingUrl("/perform_login")
 //                .defaultSuccessUrl("/")
-//                .failureForwardUrl("/login?logout=false")
+//                .failureForwardUrl("/login?error=true")
 //                .and()
 //                .logout()
 //                .logoutSuccessUrl("/login?logout=true")
 //                .and()
-//                .exceptionHandling()
-//                .accessDeniedPage("/access-denied")
+//                .exceptionHandling().accessDeniedPage("/access-denied")
 //                .and()
 //                .rememberMe()
 //                .and()
 //                .csrf().disable()
-//                .cors();
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+//        ;
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoders() {
-        return new BCryptPasswordEncoder();
-    }
 
   /*  @Bean
     public CorsConfigurationSource corsConfigurationSource(){

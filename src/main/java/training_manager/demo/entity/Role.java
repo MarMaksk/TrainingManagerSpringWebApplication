@@ -24,4 +24,12 @@ public class Role extends AbstractEntity {
     @ManyToMany
     @JoinColumn(name = "user_id")
     private Set<User> users = new HashSet<>();
+
+    public Role(RoleEnum role) {
+        this.role = role;
+    }
+
+    public void addUserToRole(User user){
+        users.add(user);
+    }
 }

@@ -1,12 +1,11 @@
 package training_manager.demo.entity;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import training_manager.demo.enums.TrainingTypeEnum;
+import training_manager.demo.repository.RoleRepository;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
@@ -58,4 +57,4 @@ public class User extends AbstractEntity {
                 ", telegramId=" + telegramId +
                 '}';
     }
-}
+ }
