@@ -16,6 +16,7 @@ import java.util.Set;
 public class Role extends AbstractEntity {
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
     @Builder.Default

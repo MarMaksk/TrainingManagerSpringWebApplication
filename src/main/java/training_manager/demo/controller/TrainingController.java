@@ -6,25 +6,24 @@
 package training_manager.demo.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import training_manager.demo.dto.TrainingDayDTO;
 import training_manager.demo.service.entity.TrainingDayService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 @RequiredArgsConstructor
 public class TrainingController {
 
     private final TrainingDayService trainingDayService;
 
-    @PostMapping({"/show_training"})
-    public List<TrainingDayDTO> showTraining(@RequestBody @Valid Long id) {
+    @GetMapping({"/show_training"})
+    public List<TrainingDayDTO> showTraining(@RequestParam Long id, Principal principal) {
+        String username = principal.getName();
         return this.trainingDayService.findByUserId(id);
     }
 

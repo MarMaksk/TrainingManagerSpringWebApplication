@@ -50,13 +50,15 @@ public class Runner {
 //        muscleService.create(new Muscle(MuscleGroupEnum.DELTOID));
 //        muscleService.create(new Muscle(MuscleGroupEnum.LEG));
 //        muscleService.create(new Muscle(MuscleGroupEnum.SHOULDERS));
-//        roleRepository.save(new Role(RoleEnum.ROLE_USER));
-//        roleRepository.save(new Role(RoleEnum.ROLE_ADMIN));
-//        roleRepository.save(new Role(RoleEnum.ROLE_HELPER));
+//        roleRepository.save(new Role(RoleEnum.USER));
+//        roleRepository.save(new Role(RoleEnum.ADMIN));
+//        roleRepository.save(new Role(RoleEnum.HELPER));
 //        repository.save(new User("maksim", "TERMAXONATOR"));
 //        repository.save(new User("newwwwwwww", "newwwwwwww"));
+        repository.save(new User("newwwww2www", "newwwwwwww2"));
+        repository.save(new User("newwwww3www", "newwwwwwww2"));
 //        User user = repository.save(new User("meow-meow-meow", "meow-meow-meow"));
-//        Role role = roleRepository.findByRole(RoleEnum.ROLE_ADMIN).get();
+//        Role role = roleRepository.findByRole(RoleEnum.ADMIN).get();
 //        role.addUserToRole(user);
 //        roleRepository.save(role);
 
@@ -64,6 +66,7 @@ public class Runner {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Runner.class, args);
+
     }
 
 }

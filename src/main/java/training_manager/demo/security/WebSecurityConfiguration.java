@@ -41,31 +41,31 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .roles("user", "admin");
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().and().debug(true);
-    }
+//    @Override
+//    public void configure(WebSecurity web) {
+//        web.ignoring().and().debug(true);
+//    }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login")
-                .permitAll();
+//        http.authorizeRequests().anyRequest().authenticated()
+//                .and().httpBasic();
 //                .antMatchers("/api/**")
 //                .access("hasRole('ROLE_USER')");
-        http.formLogin()
-                .defaultSuccessUrl("/", true)
-                .loginPage("/login");
+//        http.formLogin()
+//                .defaultSuccessUrl("/", true)
+//                .loginPage("/login");
 
-
-       /* http.cors().and().csrf().disable()
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
-                .anyRequest().authenticated().and()
-                .formLogin()
-                .defaultSuccessUrl("/", true)
-                .loginPage("/login");*/
+                .anyRequest().authenticated();
+//                .antMatchers("/api/**").permitAll()
+//                .anyRequest().authenticated().and()
+//                .formLogin()
+//                .defaultSuccessUrl("/", true)
+//                .loginPage("/login");
+
 
 
 //        http
