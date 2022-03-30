@@ -21,6 +21,6 @@ public class WeightDTO {
     @Max(500)
     private int weight;
 
-    private Long userId;
+    private String username;
 
 }

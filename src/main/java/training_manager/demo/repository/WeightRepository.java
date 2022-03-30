@@ -15,11 +15,12 @@ public interface WeightRepository extends JpaRepository<Weight, Long> {
 
     @Query("from Weight w " +
             "join w.user u " +
-            "where u.id = :id")
-    List<Weight> findByUserId(@Param("id") Long userId);
+            "where u.username = :username")
+    List<Weight> findByUsername(@Param("username") String username);
 
-    Optional<Weight> findByUserIdAndDate(Long userId, LocalDate date);
+    Optional<Weight> findByUserUsernameAndDate(String username, LocalDate date);
 
     Optional<Weight> findFirstByUserIdOrderByDateDesc(Long id);
 
+    void deleteByIdAndUserUsername(Long id, String username);
 }

@@ -23,7 +23,7 @@ class RunnerTests {
 
     @Test
     void testUserRepository() {
-        User maksim = userRepository.findByNickname("Maksim").get();
+        User maksim = userRepository.findByUsername("Maksim").get();
         System.out.println(maksim);
     }
 

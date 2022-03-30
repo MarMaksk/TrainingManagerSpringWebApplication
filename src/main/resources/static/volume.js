@@ -11,7 +11,8 @@ document.querySelector(".show-volume").onclick = () => {
 
 const showVolume = () => {
     general.deleteGrab()
-    general.postData(showBodyMeasurement, general.userId)
+    fetch(showBodyMeasurement)
+        .then(response => response.json())
         .then((data) => {
             let table = document.createElement('table')
             table.innerHTML = `
@@ -33,12 +34,12 @@ const showVolume = () => {
                 let buttonDelete = document.createElement('button')
                 volumeTr.classList.add(`tr-table${volume.id}`)
                 volumeTr.innerHTML = `
-                <td id="chest${general.userId}">${volume.chest}</td>
-                <td id="waist${general.userId}">${volume.waist}</td>
-                <td id="hips${general.userId}">${volume.hips}</td>
-                <td id="shoulder${general.userId}">${volume.shoulder}</td>
-                <td id="thigh${general.userId}">${volume.thigh}</td>
-                <td id="calves${general.userId}">${volume.calves}</td>
+                <td id="chest">${volume.chest}</td>
+                <td id="waist">${volume.waist}</td>
+                <td id="hips">${volume.hips}</td>
+                <td id="shoulder">${volume.shoulder}</td>
+                <td id="thigh">${volume.thigh}</td>
+                <td id="calves">${volume.calves}</td>
                 <td>${volume.date}</td>
                 <td class="button-td${volume.id}"></td>
                 <td class="buttondel-td${volume.id}"></td>
@@ -55,7 +56,7 @@ const showVolume = () => {
 }
 
 const deleteVolume = volume => {
-    general.postData(delBodyMeasurement, volume.id)
+    fetch(delBodyMeasurement, volume.id)
     document.querySelector(`.tr-table${volume.id}`).remove()
 }
 
@@ -70,12 +71,12 @@ const changeVolume = volume => {
     let thigh = document.createElement('input')
     let calves = document.createElement('input')
     let button = document.createElement('button')
-    chest.classList.add(`chest${general.userId}`)
-    waist.classList.add(`waist${general.userId}`)
-    hips.classList.add(`hips${general.userId}`)
-    shoulder.classList.add(`shoulder${general.userId}`)
-    thigh.classList.add(`thigh${general.userId}`)
-    calves.classList.add(`calves${general.userId}`)
+    chest.classList.add(`chest`)
+    waist.classList.add(`waist`)
+    hips.classList.add(`hips`)
+    shoulder.classList.add(`shoulder`)
+    thigh.classList.add(`thigh`)
+    calves.classList.add(`calves`)
     chest.type = "number"
     waist.type = "number"
     hips.type = "number"
@@ -113,12 +114,12 @@ const changeVolume = volume => {
 }
 
 const acceptChangeVolume = volume => {
-    volume.chest = document.querySelector(`.chest${general.userId}`).value
-    volume.waist = document.querySelector(`.waist${general.userId}`).value
-    volume.hips = document.querySelector(`.hips${general.userId}`).value
-    volume.shoulder = document.querySelector(`.shoulder${general.userId}`).value
-    volume.thigh = document.querySelector(`.thigh${general.userId}`).value
-    volume.calves = document.querySelector(`.calves${general.userId}`).value
+    volume.chest = document.querySelector(`.chest`).value
+    volume.waist = document.querySelector(`.waist`).value
+    volume.hips = document.querySelector(`.hips`).value
+    volume.shoulder = document.querySelector(`.shoulder`).value
+    volume.thigh = document.querySelector(`.thigh`).value
+    volume.calves = document.querySelector(`.calves`).value
     general.postData(updateBodyMeasurement, volume)
     document.querySelector(".div-add").remove()
 }
@@ -134,12 +135,12 @@ document.querySelector(".add-volume").onclick = () => {
     let thigh = document.createElement('input')
     let calves = document.createElement('input')
     let button = document.createElement('button')
-    chest.classList.add(`chest${general.userId}`)
-    waist.classList.add(`waist${general.userId}`)
-    hips.classList.add(`hips${general.userId}`)
-    shoulder.classList.add(`shoulder${general.userId}`)
-    thigh.classList.add(`thigh${general.userId}`)
-    calves.classList.add(`calves${general.userId}`)
+    chest.classList.add(`chest`)
+    waist.classList.add(`waist`)
+    hips.classList.add(`hips`)
+    shoulder.classList.add(`shoulder`)
+    thigh.classList.add(`thigh`)
+    calves.classList.add(`calves`)
     chest.type = "number"
     waist.type = "number"
     hips.type = "number"
@@ -171,20 +172,19 @@ document.querySelector(".add-volume").onclick = () => {
 }
 
 const addVolume = () => {
-    let chest = document.querySelector(`.chest${general.userId}`).value
-    let waist = document.querySelector(`.waist${general.userId}`).value
-    let hips = document.querySelector(`.hips${general.userId}`).value
-    let shoulder = document.querySelector(`.shoulder${general.userId}`).value
-    let thigh = document.querySelector(`.thigh${general.userId}`).value
-    let calves = document.querySelector(`.calves${general.userId}`).value
+    let chest = document.querySelector(`.chest`).value
+    let waist = document.querySelector(`.waist`).value
+    let hips = document.querySelector(`.hips`).value
+    let shoulder = document.querySelector(`.shoulder`).value
+    let thigh = document.querySelector(`.thigh`).value
+    let calves = document.querySelector(`.calves`).value
     let bodyMeasurement = {
         chest: chest,
         waist: waist,
         hips: hips,
         shoulder: shoulder,
         thigh: thigh,
-        calves: calves,
-        userId: general.userId
+        calves: calves
     }
     general.postData(createBodyMeasurement, bodyMeasurement)
     document.querySelector(".div-add").remove()

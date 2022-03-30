@@ -9,6 +9,7 @@ import training_manager.demo.dto.WorkoutDTO;
 import training_manager.demo.service.WorkoutService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +19,8 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @PostMapping("/workout_save")
-    public void workoutSave(@RequestBody @Valid WorkoutDTO dto) {
+    public void workoutSave(@RequestBody @Valid WorkoutDTO dto, Principal principal) {
+        dto.setUsername(principal.getName());
         workoutService.workoutSave(dto);
     }
 

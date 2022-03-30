@@ -29,7 +29,7 @@ public class UserService implements CUDService<User, UserDTO> {
 
     @Transactional
     public UserDTO findByNickname(String nickname) {
-        User user = repository.findByNickname(nickname).orElseThrow(() -> new NoSuchUserException(
+        User user = repository.findByUsername(nickname).orElseThrow(() -> new NoSuchUserException(
                 String.format("User with id %s not found", nickname)));
         return mapper.toDTO(user);
     }
@@ -40,8 +40,8 @@ public class UserService implements CUDService<User, UserDTO> {
     }
 
     @Transactional
-    public boolean existsUserByNickname(String nickname) {
-        return repository.existsByNickname(nickname);
+    public boolean existsUserByNickname(String username) {
+        return repository.existsByUsername(username);
     }
 
     @Override
@@ -59,5 +59,9 @@ public class UserService implements CUDService<User, UserDTO> {
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public void delete(Long id, String username) {
+        repository.deleteByIdAndUsername(id, username);
     }
 }

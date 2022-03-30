@@ -1,14 +1,12 @@
 package training_manager.demo.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import training_manager.demo.dto.WeightDTO;
 import training_manager.demo.service.entity.WeightService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,22 +16,24 @@ public class WeightController {
     private final WeightService weightService;
 
     @PostMapping("/add_weight")
-    public void addWeight(@RequestBody @Valid WeightDTO dto) {
+    public void addWeight(@RequestBody @Valid WeightDTO dto, Principal principal) {
+        dto.setUsername(principal.getName());
         weightService.createFromDTO(dto);
     }
 
-    @PostMapping("/show_weight")
-    public List<WeightDTO> showWeight(@RequestBody Long userId) {
-        return weightService.findAllUserWeight(userId);
+    @GetMapping("/show_weight")
+    public List<WeightDTO> showWeight(Principal principal) {
+        return weightService.findAllUserWeight(principal.getName());
     }
 
-    @PostMapping("/del_weight")
-    public void delWeight(@RequestBody Long id) {
-        weightService.delete(id);
+    @GetMapping("/del_weight")
+    public void delWeight(@RequestParam Long id, Principal principal) {
+        weightService.delete(id, principal.getName());
     }
 
     @PostMapping("/change_weight")
-    public void changeWeight(@RequestBody @Valid WeightDTO dto) {
+    public void changeWeight(@RequestBody @Valid WeightDTO dto, Principal principal) {
+        dto.setUsername(principal.getName());
         weightService.update(dto);
     }
 

@@ -22,28 +22,29 @@ public class TrainingController {
     private final TrainingDayService trainingDayService;
 
     @GetMapping({"/show_training"})
-    public List<TrainingDayDTO> showTraining(@RequestParam Long id, Principal principal) {
-        String username = principal.getName();
-        return this.trainingDayService.findByUserId(id);
+    public List<TrainingDayDTO> showTraining(Principal principal) {
+        return this.trainingDayService.findByUserId(principal.getName());
     }
 
     @PostMapping({"/change_training"})
-    public TrainingDayDTO changeTraining(@RequestBody @Valid TrainingDayDTO training) {
+    public TrainingDayDTO changeTraining(@RequestBody @Valid TrainingDayDTO training, Principal principal) {
+        training.setUsername(principal.getName());
         return trainingDayService.update(training);
     }
 
     @PostMapping({"/add_training"})
-    public void addTraining(@RequestBody @Valid TrainingDayDTO training) {
+    public void addTraining(@RequestBody @Valid TrainingDayDTO training, Principal principal) {
+        training.setUsername(principal.getName());
         this.trainingDayService.createFromDTO(training);
     }
 
-    @PostMapping({"/del_training"})
-    public void deleteTraining(@RequestBody @Valid TrainingDayDTO training) {
-        this.trainingDayService.delete(training.getId());
+    @GetMapping({"/del_training"})
+    public void deleteTraining(@RequestParam @Valid Long trainingId, Principal principal) {
+        this.trainingDayService.delete(trainingId, principal.getName());
     }
 
     @PostMapping({"/start_training"})
-    public List<TrainingDayDTO> startTraining(@RequestBody @Valid TrainingDayDTO training) {
-        return this.trainingDayService.findByUserAndDayAndMuscleGroup(training.getUserId(), training.getDay(), training.getMuscleGroup());
+    public List<TrainingDayDTO> startTraining(@RequestBody @Valid TrainingDayDTO training, Principal principal) {
+        return this.trainingDayService.findByUserAndDayAndMuscleGroup(principal.getName(), training.getDay(), training.getMuscleGroup());
     }
 }

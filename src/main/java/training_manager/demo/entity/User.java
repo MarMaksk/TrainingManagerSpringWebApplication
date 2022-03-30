@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class User extends AbstractEntity {
 
     @Column(unique = true, nullable = false, updatable = false)
-    private String nickname;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -33,8 +33,8 @@ public class User extends AbstractEntity {
 
     private Long telegramId;
 
-    public User(String nickname, String password) {
-        this.nickname = nickname;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -49,7 +49,7 @@ public class User extends AbstractEntity {
     public String toString() {
         return "User{" +
                 "id='" + super.getId() + '\'' +
-                "nickname='" + nickname + '\'' +
+                "username='" + username + '\'' +
                 ", registrationDate=" + registrationDate +
                 ", firstWeight=" + firstWeight +
                 ", height=" + height +

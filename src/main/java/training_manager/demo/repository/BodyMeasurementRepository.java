@@ -13,9 +13,12 @@ import java.util.Optional;
 @Repository
 public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement, Long> {
 
-    List<BodyMeasurement> findAllByUserId(Long id);
+    List<BodyMeasurement> findAllByUserUsername(String username);
 
-    Optional<BodyMeasurement> findByUserIdAndDate(Long id, LocalDate date);
+    Optional<BodyMeasurement> findByUserUsernameAndDate(String username, LocalDate date);
 
-    Optional<BodyMeasurement> findFirstByUserIdOrderByDateDesc(@Param("id") Long id);
+    Optional<BodyMeasurement> findFirstByUserUsernameOrderByDateDesc(String username);
+
+
+    void deleteByIdAndUserUsername(Long id, String username);
 }

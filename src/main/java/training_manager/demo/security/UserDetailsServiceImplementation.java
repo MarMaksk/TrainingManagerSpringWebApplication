@@ -31,14 +31,13 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByNickname(username
-        ).orElseThrow(() -> new UsernameNotFoundException("No such user was found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No such user was found"));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         Set<Role> roles = roleRepository.findByUserId(user.getId());
         for (Role role : roles)
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().name()));
         return new org.springframework.security.core.userdetails.User(
-                user.getNickname(),
+                user.getUsername(),
                 user.getPassword(),
                 grantedAuthorities
         );

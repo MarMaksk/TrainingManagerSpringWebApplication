@@ -32,6 +32,6 @@ public class BodyMeasurementDTO {
     @Max(250)
     private int calves;
 
-    private Long userId;
+    private String username;
 
 }

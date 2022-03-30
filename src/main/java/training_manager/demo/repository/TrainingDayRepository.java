@@ -13,25 +13,27 @@ import java.util.Optional;
 @Repository
 public interface TrainingDayRepository extends JpaRepository<TrainingDay, Long> {
 
-    List<TrainingDay> findAllByUserIdOrderByDay(Long id);
+    List<TrainingDay> findAllByUserUsernameOrderByDay(String username);
 
     Optional<TrainingDay> findByUserIdAndDay(Long id, int day);
 
     @Query("from TrainingDay td " +
             "join td.muscle m " +
             "join td.user u " +
-            "where u.id = :userId and td.day = :day and m.muscleGroup = :muscleGroup and td.id = :id")
+            "where u.username = :username and td.day = :day and m.muscleGroup = :muscleGroup and td.id = :id")
     Optional<TrainingDay> findByIdUserIdAndDayAndMuscleGroup(@Param("id") Long id,
-                                                             @Param("userId") Long userId,
+                                                             @Param("username") String username,
                                                              @Param("day") int day,
                                                              @Param("muscleGroup") MuscleGroupEnum muscleGroup);
 
     @Query("from TrainingDay td " +
             "join td.muscle m " +
             "join td.user u " +
-            "where u.id = :userId and td.day = :day and m.muscleGroup = :muscleGroup")
-    List<TrainingDay> findByUserIdAndDayAndMuscleGroup(@Param("userId") Long userId,
+            "where u.username = :username and td.day = :day and m.muscleGroup = :muscleGroup")
+    List<TrainingDay> findByUserIdAndDayAndMuscleGroup(@Param("username") String username,
                                                              @Param("day") int day,
                                                              @Param("muscleGroup") MuscleGroupEnum muscleGroup);
 
+
+    void deleteByIdAndUserUsername(Long id, String username);
 }

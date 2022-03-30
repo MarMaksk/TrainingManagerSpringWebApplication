@@ -24,7 +24,7 @@ public class WorkoutDTO {
 
     private MuscleGroupEnum muscleGroup;
 
-    private Long userId;
+    private String username;
 
     private Long trainingId;
 }

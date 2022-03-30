@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import training_manager.demo.dto.WeightDTO;
 import training_manager.demo.entity.Weight;
+import training_manager.demo.exception.no_such.NoSuchUserException;
 import training_manager.demo.repository.UserRepository;
 
 @Component
@@ -20,14 +21,14 @@ public class WeightDTOMapper implements EntityToDTOMapper<WeightDTO, Weight> {
     public WeightDTO toDTO(Weight entity, Object... args) {
         WeightDTO dto = modelMapper.map(entity, WeightDTO.class);
         if (entity.getUser() != null)
-            dto.setUserId(entity.getUser().getId());
+            dto.setUsername(entity.getUser().getUsername());
         return dto;
     }
 
     @Override
     public Weight toEntity(WeightDTO dto, Object... args) {
         Weight weight = modelMapper.map(dto, Weight.class);
-        weight.setUser(userRepository.getById(dto.getUserId()));
+        weight.setUser(userRepository.findByUsername(dto.getUsername()).orElseThrow(NoSuchUserException::new));
         return weight;
     }
 }

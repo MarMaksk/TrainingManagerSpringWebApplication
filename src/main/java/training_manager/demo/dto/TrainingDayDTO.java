@@ -44,7 +44,9 @@ public class TrainingDayDTO {
      * Дата последнего занятия
      */
     private LocalDate lastDate;
-
-    private Long userId;
+    /**
+     * Никнейм пользователя
+     */
+    private String username;
 
 }

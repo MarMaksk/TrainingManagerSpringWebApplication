@@ -11,7 +11,8 @@ document.querySelector(".show-weight").onclick = () => {
 
 const showVolume = () => {
     general.deleteGrab()
-    general.postData(showWeight, general.userId)
+    fetch(showWeight)
+        .then(response => response.json())
         .then((data) => {
             let table = document.createElement('table')
             table.innerHTML = `
@@ -28,7 +29,7 @@ const showVolume = () => {
                 let buttonDelete = document.createElement('button')
                 volumeTr.classList.add(`tr-table${weight.id}`)
                 volumeTr.innerHTML = `
-                <td id="chest${general.userId}">${weight.weight}</td>
+                <td id="chest">${weight.weight}</td>
                 <td>${weight.date}</td>
                 <td class="button-td${weight.id}"></td>
                 <td class="buttondel-td${weight.id}"></td>
@@ -45,7 +46,7 @@ const showVolume = () => {
 }
 
 const deleteWeight = weight => {
-    general.postData(delWeight, weight.id)
+    fetch(delWeight, weight.id)
     document.querySelector(`.tr-table${weight.id}`).remove()
 }
 
@@ -55,7 +56,7 @@ const changeWeight = weight => {
     div.classList.add('div-add')
     let value = document.createElement('input')
     let button = document.createElement('button')
-    value.classList.add(`weight${general.userId}`)
+    value.classList.add(`weight`)
     value.type = "number"
     button.innerText = "Добавить"
     value.value = `${weight.weight}`
@@ -68,7 +69,7 @@ const changeWeight = weight => {
 }
 
 const acceptChangeVolume = weight => {
-    weight.weight = document.querySelector(`.weight${general.userId}`).value
+    weight.weight = document.querySelector(`.weight`).value
     general.postData(updateWeight, weight)
     document.querySelector(".div-add").remove()
 }
@@ -79,7 +80,7 @@ document.querySelector(".add-weight").onclick = () => {
     div.classList.add('div-add')
     let weight = document.createElement('input')
     let button = document.createElement('button')
-    weight.classList.add(`weight${general.userId}`)
+    weight.classList.add(`weight`)
     weight.type = "number"
     button.innerText = "Добавить"
     div.append(document.createElement('label').innerHTML = 'Измеренный вес: ',
@@ -91,10 +92,9 @@ document.querySelector(".add-weight").onclick = () => {
 }
 
 const addVolume = () => {
-    let value = document.querySelector(`.weight${general.userId}`).value
+    let value = document.querySelector(`.weight`).value
     let weight = {
-        weight: value,
-        userId: general.userId
+        weight: value
     }
     general.postData(createWeight, weight)
     document.querySelector(".div-add").remove()

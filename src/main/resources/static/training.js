@@ -16,7 +16,8 @@ document.querySelector(".show-training").onclick = () => {
 
 const showData = () => {
     general.deleteGrab()
-    general.postData(showTrainings, general.userId)
+    fetch(showTrainings)
+        .then(response => response.json())
         .then((data) => {
             let table = document.createElement('table')
             table.innerHTML = `
@@ -60,7 +61,7 @@ const showData = () => {
 }
 
 const deleteTraining = training => {
-    general.postData(delTraining, training)
+    fetch(delTraining, training.id)
     document.querySelector(`.tr-table${training.id}`).remove()
 }
 
@@ -104,9 +105,9 @@ document.querySelector(".add-training").onclick = async () => {
     let innerDay = document.createElement('input')
     let innerDescription = document.createElement('input')
     let button = document.createElement('button')
-    innerDay.classList.add(`day${general.userId}`)
+    innerDay.classList.add(`day`)
     innerDay.type = "number"
-    innerDescription.classList.add(`descrip${general.userId}`)
+    innerDescription.classList.add(`descrip`)
     button.innerText = "Добавить"
     div.append(document.createElement('label').innerText = "Номер тренировочного дня: ")
     div.append(innerDay)
@@ -140,8 +141,8 @@ document.querySelector(".add-training").onclick = async () => {
 }
 const addTraining = () => {
     let radioButtons = document.getElementsByName('muscleGroup')
-    let inputDay = document.querySelector(`.day${general.userId}`)
-    let inputDescrip = document.querySelector(`.descrip${general.userId}`)
+    let inputDay = document.querySelector(`.day`)
+    let inputDescrip = document.querySelector(`.descrip`)
     let choise
     for (let i = 0; i < radioButtons.length; i++) {
         if (radioButtons[i].checked) {
@@ -151,8 +152,7 @@ const addTraining = () => {
     let training = {
         day: inputDay.value,
         muscleGroup: choise.value,
-        descriptionExercises: inputDescrip.value,
-        userId: general.userId
+        descriptionExercises: inputDescrip.value
     }
     general.postData(createTraining, training)
     document.querySelector(".div-add").remove()
@@ -165,7 +165,7 @@ document.querySelector(".start-training").onclick = async () => {
     let button = document.createElement('button')
     innerDay.type = "number"
     button.innerText = "Начать"
-    innerDay.classList.add(`day${general.userId}`)
+    innerDay.classList.add(`day`)
     div.append(innerDay)
     div.append(document.createElement('label').innerHTML = ' номер дня тренировки')
     div.append(document.createElement('br'))
@@ -195,7 +195,7 @@ document.querySelector(".start-training").onclick = async () => {
 }
 
 const startTraining = () => {
-    let day = document.querySelector(`.day${general.userId}`)
+    let day = document.querySelector(`.day`)
     let radioButtons = document.getElementsByName('muscleGroup')
     let choise
     for (let i = 0; i < radioButtons.length; i++) {
@@ -205,8 +205,7 @@ const startTraining = () => {
     }
     let training = {
         day: day.value,
-        muscleGroup: choise.value,
-        userId: general.userId
+        muscleGroup: choise.value
     }
     general.deleteGrab()
     general.postData(startTrainings, training)
@@ -278,7 +277,6 @@ const pasteTraining = training => {
         repeats: document.querySelector('.repeats').value,
         approaches: document.querySelector('.approaches').value,
         muscleGroup: training.muscleGroup,
-        userId: general.userId,
         trainingId: training.id
     }
     deleteGrab()

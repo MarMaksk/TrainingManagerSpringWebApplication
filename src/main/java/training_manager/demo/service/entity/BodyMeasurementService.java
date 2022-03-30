@@ -24,14 +24,14 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
     private final NullTrackingMapperDTO nullTrackingMapper;
 
 
-    public List<BodyMeasurementDTO> findAllByUser(Long id) {
-        return mapper.toDTOs(repository.findAllByUserId(id));
+    public List<BodyMeasurementDTO> findAllByUser(String username) {
+        return mapper.toDTOs(repository.findAllByUserUsername(username));
     }
 
     @Transactional
-    public BodyMeasurementDTO findBodyMeasurementUser(Long id, LocalDate date) {
-        BodyMeasurement measurement = repository.findByUserIdAndDate(id, date).orElseThrow(() -> new NoSuchBodyMeasurementException(
-                String.format("No such body measurement with user id: %d and date: %s", id, date.toString())
+    public BodyMeasurementDTO findBodyMeasurementUser(String username, LocalDate date) {
+        BodyMeasurement measurement = repository.findByUserUsernameAndDate(username, date).orElseThrow(() -> new NoSuchBodyMeasurementException(
+                String.format("No such body measurement with user id: %s and date: %s", username, date.toString())
         ));
         return mapper.toDTO(measurement);
     }
@@ -40,7 +40,7 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
         BodyMeasurement entity = mapper.toEntity(dto);
         try {
             BodyMeasurement oldBody = repository.
-                    findFirstByUserIdOrderByDateDesc(dto.getUserId()).orElseThrow(NoSuchBodyMeasurementException::new);
+                    findFirstByUserUsernameOrderByDateDesc(dto.getUsername()).orElseThrow(NoSuchBodyMeasurementException::new);
             entity.setCalves(entity.getCalves() == 0 ? oldBody.getCalves() : entity.getCalves());
             entity.setChest(entity.getChest() == 0 ? oldBody.getChest() : entity.getChest());
             entity.setHips(entity.getHips() == 0 ? oldBody.getHips() : entity.getHips());
@@ -60,7 +60,7 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
 
     @Override
     public BodyMeasurementDTO update(BodyMeasurementDTO dto) {
-        BodyMeasurement entity = repository.findByUserIdAndDate(dto.getUserId(), dto.getDate()).orElseGet(BodyMeasurement::new);
+        BodyMeasurement entity = repository.findByUserUsernameAndDate(dto.getUsername(), dto.getDate()).orElseGet(BodyMeasurement::new);
         nullTrackingMapper.toEntity(entity, dto);
         return mapper.toDTO(repository.save(entity));
     }
@@ -68,5 +68,9 @@ public class BodyMeasurementService implements CUDService<BodyMeasurement, BodyM
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public void delete(Long id, String username) {
+        repository.deleteByIdAndUserUsername(id, username);
     }
 }

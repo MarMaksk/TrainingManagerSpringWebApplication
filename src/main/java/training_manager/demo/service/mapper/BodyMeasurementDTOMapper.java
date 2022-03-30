@@ -21,14 +21,14 @@ public class BodyMeasurementDTOMapper implements EntityToDTOMapper<BodyMeasureme
     public BodyMeasurementDTO toDTO(BodyMeasurement entity, Object... args) {
         BodyMeasurementDTO dto = modelMapper.map(entity, BodyMeasurementDTO.class);
         if (entity.getUser() != null)
-            dto.setUserId(entity.getUser().getId());
+            dto.setUsername(entity.getUser().getUsername());
         return dto;
     }
 
     @Override
     public BodyMeasurement toEntity(BodyMeasurementDTO dto, Object... args) {
         BodyMeasurement bodyMeasurement = modelMapper.map(dto, BodyMeasurement.class);
-        bodyMeasurement.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
+        bodyMeasurement.setUser(userRepository.findByUsername(dto.getUsername()).orElseThrow());
         return bodyMeasurement;
     }
 }

@@ -22,14 +22,14 @@ public class TrainingDayDTOMapper implements EntityToDTOMapper<TrainingDayDTO, T
     public TrainingDayDTO toDTO(TrainingDay entity, Object... args) {
         TrainingDayDTO dto = modelMapper.map(entity, TrainingDayDTO.class);
         dto.setMuscleGroup(entity.getMuscle().getMuscleGroup());
-        dto.setUserId(entity.getUser().getId());
+        dto.setUsername(entity.getUser().getUsername());
         return dto;
     }
 
     @Override
     public TrainingDay toEntity(TrainingDayDTO dto, Object... args) {
         TrainingDay entity = modelMapper.map(dto, TrainingDay.class);
-        entity.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
+        entity.setUser(userRepository.findByUsername(dto.getUsername()).orElseThrow());
         entity.setMuscle(muscleRepository.findByMuscleGroup(dto.getMuscleGroup()).orElseThrow());
         return entity;
     }

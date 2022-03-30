@@ -26,8 +26,8 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     private final NullTrackingMapperDTO nullTrackingMapper;
 
     @Transactional
-    public List<TrainingDayDTO> findByUserId(Long id) {
-        return mapper.toDTOs(repository.findAllByUserIdOrderByDay(id));
+    public List<TrainingDayDTO> findByUserId(String username) {
+        return mapper.toDTOs(repository.findAllByUserUsernameOrderByDay(username));
     }
 
     @Transactional
@@ -39,14 +39,14 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     }
 
     @Transactional
-    public List<TrainingDayDTO> findByUserAndDayAndMuscleGroup(Long userId, int day, MuscleGroupEnum muscleGroup) {
-        List<TrainingDay> trainingDay = repository.findByUserIdAndDayAndMuscleGroup(userId, day, muscleGroup);
+    public List<TrainingDayDTO> findByUserAndDayAndMuscleGroup(String username, int day, MuscleGroupEnum muscleGroup) {
+        List<TrainingDay> trainingDay = repository.findByUserIdAndDayAndMuscleGroup(username, day, muscleGroup);
         return mapper.toDTOs(trainingDay);
     }
 
     public void createFromDTO(TrainingDayDTO dto) {
         TrainingDay entity = mapper.toEntity(dto);
-        entity.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
+        entity.setUser(userRepository.findByUsername(dto.getUsername()).orElseThrow());
         entity.setMuscle(muscleRepository.findByMuscleGroup(dto.getMuscleGroup()).orElseThrow());
         repository.save(entity);
     }
@@ -59,7 +59,7 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     @Override
     public TrainingDayDTO update(TrainingDayDTO dto) {
         TrainingDay trainingDay = repository
-                .findByIdUserIdAndDayAndMuscleGroup(dto.getId(), dto.getUserId(), dto.getDay(), dto.getMuscleGroup())
+                .findByIdUserIdAndDayAndMuscleGroup(dto.getId(), dto.getUsername(), dto.getDay(), dto.getMuscleGroup())
                 .orElseGet(TrainingDay::new);
         nullTrackingMapper.toEntity(trainingDay, dto);
         return mapper.toDTO(repository.save(trainingDay));
@@ -68,6 +68,10 @@ public class TrainingDayService implements CUDService<TrainingDay, TrainingDayDT
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public void delete(Long id, String username) {
+        repository.deleteByIdAndUserUsername(id, username);
     }
 }
 

@@ -53,10 +53,10 @@ public class Runner {
 //        roleRepository.save(new Role(RoleEnum.USER));
 //        roleRepository.save(new Role(RoleEnum.ADMIN));
 //        roleRepository.save(new Role(RoleEnum.HELPER));
-//        repository.save(new User("maksim", "TERMAXONATOR"));
+        repository.save(new User("maksim", "TERMAXONATOR"));
 //        repository.save(new User("newwwwwwww", "newwwwwwww"));
-        repository.save(new User("newwwww2www", "newwwwwwww2"));
-        repository.save(new User("newwwww3www", "newwwwwwww2"));
+//        repository.save(new User("newwwww2www", "newwwwwwww2"));
+//        repository.save(new User("newwwww3www", "newwwwwwww2"));
 //        User user = repository.save(new User("meow-meow-meow", "meow-meow-meow"));
 //        Role role = roleRepository.findByRole(RoleEnum.ADMIN).get();
 //        role.addUserToRole(user);

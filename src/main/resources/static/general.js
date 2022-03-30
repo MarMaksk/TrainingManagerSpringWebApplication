@@ -1,5 +1,3 @@
-export let userId = document.getElementById("userId").value
-export let identification = 0;
 
 export async function postData(url, data) {
     // Default options are marked with *
