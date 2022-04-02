@@ -20,4 +20,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             "join r.users u " +
             "where u.id = :id")
     Set<Role> findByUserId(@Param("id") Long userId);
+
+    Set<Role> findByUsersUsername(String name);
 }

@@ -1,43 +1,39 @@
 package training_manager.demo.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationProviderImplementation authenticationProvider;
     private final UserDetailsServiceImplementation userService;
-    private final PasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
-    @Autowired
-    public WebSecurityConfiguration(AuthenticationProviderImplementation authenticationProvider, UserDetailsServiceImplementation userService, PasswordEncoder encoder) {
-        this.authenticationProvider = authenticationProvider;
-        this.userService = userService;
-        this.encoder = encoder;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
+//        auth.authenticationProvider(authenticationProvider);
         auth.userDetailsService(userService).passwordEncoder(encoder);
-        auth.inMemoryAuthentication()
-                .passwordEncoder(encoder)
-                .withUser("user")
-                .password("$2a$10$0C3XNq8tuxvevO8jQyPvcuTF7Vdc6fx4CAc1YaecL.Kd2QiUP//FO") //user
-                .roles("user", "admin")
-                .and()
-                .withUser("admin")
-                .password("admin") //admin
-                .roles("user", "admin");
+//        auth.inMemoryAuthentication()
+//                .passwordEncoder(encoder)
+//                .withUser("user")
+//                .password("$2a$10$0C3XNq8tuxvevO8jQyPvcuTF7Vdc6fx4CAc1YaecL.Kd2QiUP//FO") //user
+//                .roles("user", "admin")
+//                .and()
+//                .withUser("admin")
+//                .password("admin") //admin
+//                .roles("user", "admin");
     }
 
 //    @Override
@@ -55,10 +51,36 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        http.formLogin()
 //                .defaultSuccessUrl("/", true)
 //                .loginPage("/login");
-
-        http.cors().and().csrf().disable().httpBasic().and()
+        http
+                .csrf()
+                .disable()
                 .authorizeRequests()
-                .anyRequest().authenticated();
+//                .antMatchers("/register").anonymous()
+//                .antMatchers("/notSecure").permitAll()
+//                .antMatchers("/admin").hasRole("ADMIN")
+//                .antMatchers("/user", "/user/**").hasRole("USER")
+//                .antMatchers("/logout").authenticated()
+//                .antMatchers("/").authenticated()
+                .antMatchers("/register", "/register/**").anonymous()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+//                .and().httpBasic()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/authorize")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/");
+//        http.cors().and().csrf().disable().httpBasic().and()
+//                .authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
 //                .antMatchers("/api/**").permitAll()
 //                .anyRequest().authenticated().and()
 //                .formLogin()

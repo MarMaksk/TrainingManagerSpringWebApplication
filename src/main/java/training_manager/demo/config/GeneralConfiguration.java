@@ -13,11 +13,11 @@ public class GeneralConfiguration {
         return new ModelMapper();
     }
 
-    @Bean
-    public FlywayMigrationStrategy flywayMigrationStrategy() {
-        return flyway -> {
-            flyway.baseline();
-            flyway.migrate();
-        };
-    }
+//    @Bean
+//    public FlywayMigrationStrategy flywayMigrationStrategy() {
+//        return flyway -> {
+//            flyway.baseline();
+//            flyway.migrate();
+//        };
+//    }
 }

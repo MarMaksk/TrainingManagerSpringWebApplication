@@ -1,6 +1,7 @@
 package training_manager.demo.service.entity;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.UserDTO;
 import training_manager.demo.entity.User;
@@ -19,6 +20,7 @@ public class UserService implements CUDService<User, UserDTO> {
     private final UserRepository repository;
     private final UserDTOMapper mapper;
     private final NullTrackingMapperDTO nullTrackingMapper;
+    private final BCryptPasswordEncoder encoder;
 
     @Transactional
     public UserDTO findById(Long id) {
@@ -46,6 +48,7 @@ public class UserService implements CUDService<User, UserDTO> {
 
     @Override
     public UserDTO create(User entity) {
+        entity.setPassword(encoder.encode(entity.getPassword()));
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -58,10 +61,15 @@ public class UserService implements CUDService<User, UserDTO> {
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        User user = repository.findById(id).orElseThrow(NoSuchUserException::new);
+        user.setDeleted(true);
+        repository.save(user);
     }
 
+    @Transactional
     public void delete(Long id, String username) {
-        repository.deleteByIdAndUsername(id, username);
+        User user = repository.findByIdAndUsername(id, username).orElseThrow(NoSuchUserException::new);
+        user.setDeleted(true);
+        repository.save(user);
     }
 }

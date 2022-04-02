@@ -19,7 +19,6 @@ public class UserDTOMapper implements EntityToDTOMapper<UserDTO, User> {
     @Override
     public UserDTO toDTO(User entity, Object... args) {
         UserDTO dto = modelMapper.map(entity, UserDTO.class);
-        dto.setCurrentWeight(weightService.findByUserLastWeight(entity.getId()).getWeight());
         return dto;
     }
 

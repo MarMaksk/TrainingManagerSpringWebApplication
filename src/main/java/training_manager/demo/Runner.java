@@ -53,7 +53,8 @@ public class Runner {
 //        roleRepository.save(new Role(RoleEnum.USER));
 //        roleRepository.save(new Role(RoleEnum.ADMIN));
 //        roleRepository.save(new Role(RoleEnum.HELPER));
-        repository.save(new User("maksim", "TERMAXONATOR"));
+//        repository.save(new User("maksim", "TERMAXONATOR"));
+//        repository.save(new User("1111", "1111"));
 //        repository.save(new User("newwwwwwww", "newwwwwwww"));
 //        repository.save(new User("newwwww2www", "newwwwwwww2"));
 //        repository.save(new User("newwwww3www", "newwwwwwww2"));
@@ -66,7 +67,7 @@ public class Runner {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Runner.class, args);
-
+        log.info("main started");
     }
 
 }

@@ -3,8 +3,11 @@ package training_manager.demo.service.entity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import training_manager.demo.dto.WeightDTO;
+import training_manager.demo.entity.User;
 import training_manager.demo.entity.Weight;
+import training_manager.demo.exception.no_such.NoSuchUserException;
 import training_manager.demo.exception.no_such.NoSuchWeightException;
+import training_manager.demo.repository.UserRepository;
 import training_manager.demo.repository.WeightRepository;
 import training_manager.demo.service.mapper.NullTrackingMapperDTO;
 import training_manager.demo.service.mapper.WeightDTOMapper;
@@ -19,6 +22,7 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
 
     private final WeightRepository repository;
     private final WeightDTOMapper mapper;
+    private final UserRepository userRepository;
     private final NullTrackingMapperDTO nullTrackingMapper;
 
     @Transactional
@@ -41,8 +45,12 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
         return mapper.toDTO(weight);
     }
 
+    @Transactional
     public WeightDTO createFromDTO(WeightDTO dto) {
         Weight entity = mapper.toEntity(dto);
+        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(NoSuchUserException::new);
+        user.setHeight(entity.getWeight());
+        userRepository.save(user);
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -55,6 +63,9 @@ public class WeightService implements CUDService<Weight, WeightDTO> {
     public WeightDTO update(WeightDTO dto) {
         Weight weight = repository.findByUserUsernameAndDate(dto.getUsername(), dto.getDate()).orElseGet(Weight::new);
         nullTrackingMapper.toEntity(weight, dto);
+        User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(NoSuchUserException::new);
+        user.setHeight(weight.getWeight());
+        userRepository.save(user);
         return mapper.toDTO(repository.save(weight));
     }
 

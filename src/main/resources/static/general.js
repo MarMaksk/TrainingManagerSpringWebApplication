@@ -1,3 +1,23 @@
+window.onload = () => {
+    fetch("/admin/checkRoot").then(r => r.json())
+        .then(admin => {
+            if (admin === true) {
+                let div = document.createElement('div')
+                div.innerHTML = `<br>
+<div class="btn-group" role="group">
+    <button id="btnGroupDrop4" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        Админ панель
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <li><a class="dropdown-item show-all-users" href="#">Показать всех пользователей</a></li>
+    </ul>
+</div>
+<br>`
+                document.querySelector('.show-info').prepend(div)
+            }
+        })
+}
 
 export async function postData(url, data) {
     // Default options are marked with *
@@ -17,7 +37,7 @@ export async function postData(url, data) {
     return await response.json(); // parses JSON response into native JavaScript objects
 }
 
-export function deleteGrab(){
+export function deleteGrab() {
     try {
         document.querySelector('.show-table').remove()
     } catch (e) {

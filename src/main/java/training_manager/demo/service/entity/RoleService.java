@@ -9,12 +9,18 @@ import training_manager.demo.exception.no_such.NoSuchRoleException;
 import training_manager.demo.repository.RoleRepository;
 
 import javax.transaction.Transactional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class RoleService implements CUDService<Role, RoleDTO> {
 
     private final RoleRepository repository;
+
+    public boolean checkAdminRootByNickname(String username) {
+        Set<Role> roles = repository.findByUsersUsername(username);
+        return roles.stream().anyMatch(r -> r.getRole().equals(RoleEnum.ADMIN));
+    }
 
     @Transactional
     public RoleDTO findByRole(RoleEnum roleEnum) {
